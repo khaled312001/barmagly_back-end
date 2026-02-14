@@ -9,10 +9,14 @@ import fs from 'fs';
 
 const router = Router();
 
-// Ensure uploads directory exists
+// Ensure uploads directory exists (only for local development)
 const uploadDir = path.join(process.cwd(), 'uploads');
-if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir, { recursive: true });
+if (!process.env.VERCEL && !fs.existsSync(uploadDir)) {
+    try {
+        fs.mkdirSync(uploadDir, { recursive: true });
+    } catch (err) {
+        console.error('Failed to create uploads directory:', err);
+    }
 }
 
 // Multer config

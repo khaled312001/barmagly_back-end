@@ -14,7 +14,6 @@ import authRoutes from './routes/auth';
 import publicRoutes from './routes/public';
 import adminRoutes from './routes/admin';
 import systemRoutes from './routes/system';
-import fs from 'fs';
 
 function log(msg: string) {
     console.log(`[${new Date().toISOString()}] ${msg}`);
@@ -63,6 +62,15 @@ app.get('/api/health', (_req, res) => {
     res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
+// Root check
+app.get('/api', (_req, res) => {
+    res.json({ message: 'Barmagly Backend API is running', version: '1.0.0' });
+});
+
+app.get('/', (_req, res) => {
+    res.json({ message: 'Barmagly Backend is running', version: '1.0.0' });
+});
+
 // ============ ERROR HANDLING ============
 
 app.use((err: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
@@ -106,6 +114,25 @@ async function initialize() {
         }
     } catch (err: any) {
         log(`❌ Auto-seed failed: ${err.message}`);
+    }
+
+    // Seed essential settings
+    try {
+        const essentialSettings = [
+            { key: 'companyName', value: 'Barmagly' },
+            { key: 'email', value: 'info@barmagly.ch' }
+        ];
+
+        for (const s of essentialSettings) {
+            await prisma.siteSetting.upsert({
+                where: { key: s.key },
+                update: {},
+                create: { key: s.key, value: s.value }
+            });
+        }
+        log('✅ Essential site settings verified');
+    } catch (err: any) {
+        log(`❌ Settings seed failed: ${err.message}`);
     }
 }
 
