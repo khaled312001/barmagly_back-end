@@ -3,14 +3,14 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
 // ============ AUTH & USERS ============
 
 model User {
-  id           String   @id @default(uuid())
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
   email        String   @unique
   password     String
   name         String
@@ -24,7 +24,7 @@ model User {
 // ============ SERVICES ============
 
 model ServiceCategory {
-  id          String    @id @default(uuid())
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
   name        String
   slug        String    @unique
   description String?
@@ -37,7 +37,7 @@ model ServiceCategory {
 }
 
 model Service {
-  id          String          @id @default(uuid())
+  id          String          @id @default(auto()) @map("_id") @db.ObjectId
   title       String
   slug        String          @unique
   description String
@@ -47,7 +47,7 @@ model Service {
   features    String          @default("[]")
   order       Int             @default(0)
   isActive    Boolean         @default(true)
-  categoryId  String
+  categoryId  String          @db.ObjectId
   category    ServiceCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   createdAt   DateTime        @default(now())
   updatedAt   DateTime        @updatedAt
@@ -56,7 +56,7 @@ model Service {
 // ============ PORTFOLIO ============
 
 model Project {
-  id            String         @id @default(uuid())
+  id            String         @id @default(auto()) @map("_id") @db.ObjectId
   title         String
   slug          String         @unique
   description   String
@@ -76,18 +76,18 @@ model Project {
 }
 
 model ProjectImage {
-  id        String   @id @default(uuid())
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   url       String
   alt       String?
   order     Int      @default(0)
-  projectId String
+  projectId String   @db.ObjectId
   project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
 }
 
 // ============ BLOG ============
 
 model BlogPost {
-  id          String       @id @default(uuid())
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
   title       String
   slug        String       @unique
   excerpt     String
@@ -100,17 +100,18 @@ model BlogPost {
   metaDesc    String?
   keywords    String       @default("[]")
   readTime    String?
-  authorId    String
+  authorId    String       @db.ObjectId
   author      User         @relation(fields: [authorId], references: [id])
-  categoryId  String?
+  categoryId  String?      @db.ObjectId
   category    BlogCategory? @relation(fields: [categoryId], references: [id])
-  tags        BlogTag[]
+  tagIds      String[]     @db.ObjectId
+  tags        BlogTag[]    @relation(fields: [tagIds], references: [id])
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
 }
 
 model BlogCategory {
-  id        String     @id @default(uuid())
+  id        String     @id @default(auto()) @map("_id") @db.ObjectId
   name      String
   slug      String     @unique
   posts     BlogPost[]
@@ -118,16 +119,17 @@ model BlogCategory {
 }
 
 model BlogTag {
-  id    String     @id @default(uuid())
+  id    String     @id @default(auto()) @map("_id") @db.ObjectId
   name  String     @unique
   slug  String     @unique
-  posts BlogPost[]
+  postIds String[] @db.ObjectId
+  posts BlogPost[] @relation(fields: [postIds], references: [id])
 }
 
 // ============ TESTIMONIALS ============
 
 model Testimonial {
-  id        String   @id @default(uuid())
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   name      String
   role      String
   company   String?
@@ -143,7 +145,7 @@ model Testimonial {
 // ============ TEAM ============
 
 model TeamMember {
-  id        String   @id @default(uuid())
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   name      String
   role      String
   bio       String?
@@ -160,7 +162,7 @@ model TeamMember {
 // ============ LEADS / CONTACTS ============
 
 model Lead {
-  id        String     @id @default(uuid())
+  id        String     @id @default(auto()) @map("_id") @db.ObjectId
   name      String
   email     String
   phone     String?
@@ -176,7 +178,7 @@ model Lead {
 // ============ NEWSLETTER ============
 
 model NewsletterSubscriber {
-  id        String   @id @default(uuid())
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   email     String   @unique
   isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
@@ -185,7 +187,7 @@ model NewsletterSubscriber {
 // ============ FAQ ============
 
 model FAQ {
-  id        String   @id @default(uuid())
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   question  String
   answer    String
   category  String?
@@ -198,7 +200,7 @@ model FAQ {
 // ============ SITE SETTINGS ============
 
 model SiteSetting {
-  id    String @id @default(uuid())
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
   key   String @unique
   value String
   type  String @default("text")
@@ -207,7 +209,7 @@ model SiteSetting {
 // ============ SEO META ============
 
 model SeoMeta {
-  id          String   @id @default(uuid())
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
   page        String   @unique
   title       String?
   description String?
@@ -221,7 +223,7 @@ model SeoMeta {
 // ============ MEDIA ============
 
 model Media {
-  id        String   @id @default(uuid())
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   filename  String
   url       String
   mimetype  String
@@ -233,7 +235,7 @@ model Media {
 // ============ PAGE SECTIONS ============
 
 model PageSection {
-  id        String   @id @default(uuid())
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   page      String
   section   String
   isVisible Boolean  @default(true)

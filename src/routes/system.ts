@@ -92,7 +92,7 @@ router.get('/status', roleGuard('ADMIN'), async (_req, res) => {
     };
 
     try {
-        await prisma.$queryRaw`SELECT 1`;
+        await prisma.user.findFirst();
         status.database = 'Connected';
     } catch (error: any) {
         status.database = `Error: ${error.message} `;
