@@ -42,8 +42,9 @@ app.use(cors({
         const isAllowed = allowedOrigins.some(ao => origin === ao || origin.startsWith(ao));
         const isVercel = origin.endsWith('.vercel.app');
         const isLocal = origin.includes('localhost') || origin.includes('127.0.0.1');
+        const isTech = origin.endsWith('.barmagly.tech') || origin === 'https://barmagly.tech' || origin === 'https://www.barmagly.tech';
 
-        if (isAllowed || isVercel || isLocal) {
+        if (isAllowed || isVercel || isLocal || isTech) {
             callback(null, true);
         } else {
             console.log(`Blocked by CORS: ${origin}`);
