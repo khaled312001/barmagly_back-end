@@ -4,7 +4,7 @@ import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
 import prisma from './lib/prisma';
-import bcrypt from 'bcryptjs';
+import * as bcrypt from 'bcryptjs';
 
 // Load env
 dotenv.config();
@@ -150,6 +150,12 @@ async function initialize() {
     }
 }
 
+import * as bcrypt from 'bcryptjs';
+
+// ... (rest of imports)
+
+// ... (inside the start logic at the end)
+
 // Check if we are in Vercel or local
 if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
     app.listen(Number(PORT), '0.0.0.0', async () => {
@@ -157,8 +163,9 @@ if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
         await initialize();
     });
 } else {
-    // In Vercel, initialization happens on first cold start or lazily
-    initialize().catch(err => log(`Initialization error: ${err.message}`));
+    // In Vercel, we avoid top-level async work to prevent bootstrap timeouts/crashes.
+    // The user will trigger initialization manually via /api/system/init-db.
+    log('🚀 Running in Vercel mode (Lazy Initialization)');
 }
 
 // Graceful shutdown
