@@ -1,0 +1,245 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ============ AUTH & USERS ============
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  password     String
+  name         String
+  role         String   @default("EDITOR")
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  blogPosts    BlogPost[]
+}
+
+// ============ SERVICES ============
+
+model ServiceCategory {
+  id          String    @id @default(uuid())
+  name        String
+  slug        String    @unique
+  description String?
+  icon        String?
+  order       Int       @default(0)
+  isActive    Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  services    Service[]
+}
+
+model Service {
+  id          String          @id @default(uuid())
+  title       String
+  slug        String          @unique
+  description String
+  details     String?
+  icon        String?
+  image       String?
+  features    String          @default("[]")
+  order       Int             @default(0)
+  isActive    Boolean         @default(true)
+  categoryId  String
+  category    ServiceCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+}
+
+// ============ PORTFOLIO ============
+
+model Project {
+  id            String         @id @default(uuid())
+  title         String
+  slug          String         @unique
+  description   String
+  content       String?
+  category      String
+  client        String?
+  duration      String?
+  technologies  String         @default("[]")
+  results       String?
+  image         String?
+  isFeatured    Boolean        @default(false)
+  isActive      Boolean        @default(true)
+  order         Int            @default(0)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  images        ProjectImage[]
+}
+
+model ProjectImage {
+  id        String   @id @default(uuid())
+  url       String
+  alt       String?
+  order     Int      @default(0)
+  projectId String
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+// ============ BLOG ============
+
+model BlogPost {
+  id          String       @id @default(uuid())
+  title       String
+  slug        String       @unique
+  excerpt     String
+  content     String
+  image       String?
+  status      String       @default("DRAFT")
+  publishedAt DateTime?
+  scheduledAt DateTime?
+  metaTitle   String?
+  metaDesc    String?
+  keywords    String       @default("[]")
+  readTime    String?
+  authorId    String
+  author      User         @relation(fields: [authorId], references: [id])
+  categoryId  String?
+  category    BlogCategory? @relation(fields: [categoryId], references: [id])
+  tags        BlogTag[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+model BlogCategory {
+  id        String     @id @default(uuid())
+  name      String
+  slug      String     @unique
+  posts     BlogPost[]
+  createdAt DateTime   @default(now())
+}
+
+model BlogTag {
+  id    String     @id @default(uuid())
+  name  String     @unique
+  slug  String     @unique
+  posts BlogPost[]
+}
+
+// ============ TESTIMONIALS ============
+
+model Testimonial {
+  id        String   @id @default(uuid())
+  name      String
+  role      String
+  company   String?
+  content   String
+  rating    Int      @default(5)
+  image     String?
+  isActive  Boolean  @default(true)
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ============ TEAM ============
+
+model TeamMember {
+  id        String   @id @default(uuid())
+  name      String
+  role      String
+  bio       String?
+  image     String?
+  linkedin  String?
+  github    String?
+  twitter   String?
+  order     Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ============ LEADS / CONTACTS ============
+
+model Lead {
+  id        String     @id @default(uuid())
+  name      String
+  email     String
+  phone     String?
+  company   String?
+  service   String?
+  message   String
+  status    String     @default("NEW")
+  source    String?    @default("website")
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+// ============ NEWSLETTER ============
+
+model NewsletterSubscriber {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
+
+// ============ FAQ ============
+
+model FAQ {
+  id        String   @id @default(uuid())
+  question  String
+  answer    String
+  category  String?
+  order     Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ============ SITE SETTINGS ============
+
+model SiteSetting {
+  id    String @id @default(uuid())
+  key   String @unique
+  value String
+  type  String @default("text")
+}
+
+// ============ SEO META ============
+
+model SeoMeta {
+  id          String   @id @default(uuid())
+  page        String   @unique
+  title       String?
+  description String?
+  keywords    String   @default("[]")
+  ogImage     String?
+  schema      String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// ============ MEDIA ============
+
+model Media {
+  id        String   @id @default(uuid())
+  filename  String
+  url       String
+  mimetype  String
+  size      Int
+  alt       String?
+  createdAt DateTime @default(now())
+}
+
+// ============ PAGE SECTIONS ============
+
+model PageSection {
+  id        String   @id @default(uuid())
+  page      String
+  section   String
+  isVisible Boolean  @default(true)
+  order     Int      @default(0)
+  content   String?
+  updatedAt DateTime @updatedAt
+
+  @@unique([page, section])
+}
