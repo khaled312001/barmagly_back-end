@@ -1,0 +1,121 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./sqlite-client"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id           String   @id
+  email        String   @unique
+  password     String
+  name         String
+  role         String
+  isActive     Boolean
+  createdAt    DateTime
+  updatedAt    DateTime
+}
+
+model ServiceCategory {
+  id          String    @id
+  name        String
+  slug        String    @unique
+  description String?
+  icon        String?
+  isActive    Boolean
+  displayOrder Int
+}
+
+model Service {
+  id          String          @id
+  title       String
+  slug        String          @unique
+  description String
+  icon        String?
+  features    String
+  categoryId  String
+  order       Int
+  isActive    Boolean
+}
+
+model Project {
+  id          String   @id
+  title       String
+  slug        String   @unique
+  category    String
+  description String
+  images      String?
+  technologies String?
+  link        String?
+  github      String?
+  isFeatured  Boolean
+  order       Int
+  content     String?
+  client      String?
+  duration    String?
+}
+
+model BlogPost {
+  id          String   @id
+  title       String
+  slug        String   @unique
+  excerpt     String
+  content     String
+  coverImage  String?
+  authorId    String
+  categoryId  String
+  isPublished Boolean
+  publishedAt DateTime?
+}
+
+model BlogCategory {
+  name String
+  slug String @id
+}
+
+model Testimonial {
+  id      String @id
+  name    String
+  role    String
+  content String
+  avatar  String?
+  rating  Int
+  order   Int
+}
+
+model TeamMember {
+  id    String @id
+  name  String
+  role  String
+  bio   String
+  image String?
+  order Int
+}
+
+model FAQ {
+  id       String @id
+  question String
+  answer   String
+  order    Int
+}
+
+model SiteSetting {
+  key   String @id
+  value String
+}
+
+model SeoMeta {
+  page        String @id
+  title       String
+  description String
+}
+
+model PageSection {
+  id      String @id
+  page    String
+  section String
+  content String
+}
