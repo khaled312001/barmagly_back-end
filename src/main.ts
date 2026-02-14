@@ -30,9 +30,23 @@ app.use(helmet({
 }));
 
 // CORS
-const allowedOrigins = process.env.FRONTEND_URL?.split(',') || ['http://localhost:3000'];
+const allowedOrigins = process.env.FRONTEND_URL?.split(',') || [];
 app.use(cors({
-    origin: allowedOrigins,
+    origin: (origin, callback) => {
+        // Allow requests with no origin (like mobile apps or curl)
+        if (!origin) return callback(null, true);
+
+        const isAllowed = allowedOrigins.some(ao => origin === ao || origin.startsWith(ao));
+        const isVercel = origin.endsWith('.vercel.app');
+        const isLocal = origin.includes('localhost') || origin.includes('127.0.0.1');
+
+        if (isAllowed || isVercel || isLocal) {
+            callback(null, true);
+        } else {
+            console.log(`Blocked by CORS: ${origin}`);
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     credentials: true,
 }));
 
