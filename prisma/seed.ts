@@ -7,7 +7,7 @@ async function main() {
     console.log('🌱 Starting seed...');
 
     // 1. Admin User
-    const email = 'admin@barmagly.com';
+    const email = 'admin@barmagly.ch';
     const password = await bcrypt.hash('admin123', 10);
 
     const admin = await prisma.user.upsert({
@@ -409,7 +409,7 @@ async function main() {
     console.log('🔍 SEO meta seeded');
 
     console.log('\n🎉 Seed completed successfully!');
-    console.log('📧 Admin login: admin@barmagly.com / admin123');
+    console.log('📧 Admin login: admin@barmagly.ch / admin123');
 }
 
 main()
