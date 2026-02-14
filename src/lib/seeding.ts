@@ -13,7 +13,7 @@ export async function seedDatabase() {
         log('🌱 Starting comprehensive seed...');
 
         // 1. Admin User
-        const adminEmail = 'admin@barmagly.ch';
+        const adminEmail = 'admin@barmagly.tech';
         const password = await bcrypt.hash('admin123', 12);
 
         await prisma.user.upsert({
@@ -31,7 +31,7 @@ export async function seedDatabase() {
         // 2. Site Settings
         const settings = [
             { key: 'companyName', value: 'Barmagly' },
-            { key: 'email', value: 'info@barmagly.ch' },
+            { key: 'email', value: 'info@barmagly.tech' },
             { key: 'phone', value: '+41 77 941 21 26' },
             { key: 'address', value: 'Hardstrasse 201, 8005 Zürich, Switzerland' },
             { key: 'license', value: 'CHE-154.312.079' },

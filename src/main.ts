@@ -120,7 +120,7 @@ async function initialize() {
 
     // Auto-seed admin user
     try {
-        const adminEmail = 'admin@barmagly.ch';
+        const adminEmail = 'admin@barmagly.tech';
         const exists = await prisma.user.findUnique({ where: { email: adminEmail } });
         if (!exists) {
             const hashedPassword = await bcrypt.hash('admin123', 12);
@@ -142,7 +142,7 @@ async function initialize() {
     try {
         const essentialSettings = [
             { key: 'companyName', value: 'Barmagly' },
-            { key: 'email', value: 'info@barmagly.ch' }
+            { key: 'email', value: 'info@barmagly.tech' }
         ];
 
         for (const s of essentialSettings) {
