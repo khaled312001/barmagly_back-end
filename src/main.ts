@@ -150,12 +150,6 @@ async function initialize() {
     }
 }
 
-import * as bcrypt from 'bcryptjs';
-
-// ... (rest of imports)
-
-// ... (inside the start logic at the end)
-
 // Check if we are in Vercel or local
 if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
     app.listen(Number(PORT), '0.0.0.0', async () => {
