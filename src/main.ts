@@ -13,6 +13,7 @@ dotenv.config();
 import authRoutes from './routes/auth';
 import publicRoutes from './routes/public';
 import adminRoutes from './routes/admin';
+import systemRoutes from './routes/system';
 import fs from 'fs';
 
 const logFile = 'server_startup.log';
@@ -59,6 +60,7 @@ app.use('/uploads', express.static('uploads'));
 app.use('/api/auth', authRoutes);
 app.use('/api', publicRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/system', systemRoutes);
 
 // Health check
 app.get('/api/health', (_req, res) => {
