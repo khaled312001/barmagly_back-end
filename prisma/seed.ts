@@ -25,7 +25,7 @@ async function main() {
     // 2. Site Settings
     const settings = [
         { key: 'companyName', value: 'Barmagly' },
-        { key: 'email', value: 'info@barmagly.com' },
+        { key: 'email', value: 'info@barmagly.ch' },
         { key: 'phone', value: '+41 77 941 21 26' },
         { key: 'address', value: 'Zurich, Switzerland' },
         { key: 'license', value: 'CHE-154.312.079' },
