@@ -1,13 +1,16 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
-import dotenv from 'dotenv';
 import prisma from './lib/prisma';
 import * as bcrypt from 'bcryptjs';
 
-// Load env
-dotenv.config();
+if (process.env.NODE_ENV === 'production' && !process.env.DATABASE_URL) {
+    console.error('CRITICAL: DATABASE_URL is not defined in the environment!');
+}
 
 // Routes
 import authRoutes from './routes/auth';
@@ -73,7 +76,12 @@ app.use('/api/system', systemRoutes);
 
 // Health check
 app.get('/api/health', (_req, res) => {
-    res.json({ status: 'ok', timestamp: new Date().toISOString() });
+    res.json({
+        status: 'ok',
+        timestamp: new Date().toISOString(),
+        databaseUrlDetected: !!process.env.DATABASE_URL,
+        nodeEnv: process.env.NODE_ENV
+    });
 });
 
 // Root check
