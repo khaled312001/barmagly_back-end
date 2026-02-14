@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import { PrismaClient } from '@prisma/client';
+import prisma from '../lib/prisma';
 import { authMiddleware, roleGuard, AuthRequest } from '../middleware/auth';
 import { getPageSections, updatePageSection } from '../controllers/pageController';
 import slugifyFn from 'slugify';
@@ -8,7 +8,6 @@ import path from 'path';
 import fs from 'fs';
 
 const router = Router();
-const prisma = new PrismaClient();
 
 // Ensure uploads directory exists
 const uploadDir = path.join(process.cwd(), 'uploads');

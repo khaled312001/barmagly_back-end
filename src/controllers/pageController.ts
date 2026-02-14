@@ -3,9 +3,7 @@
  * Handles CRUD operations for Page Sections
  */
 import { Request, Response } from 'express';
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import prisma from '../lib/prisma';
 
 // Get all sections for a page
 export const getPageSections = async (req: Request, res: Response) => {

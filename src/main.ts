@@ -3,7 +3,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
-import { PrismaClient } from '@prisma/client';
+import prisma from './lib/prisma';
 import bcrypt from 'bcryptjs';
 
 // Load env
@@ -16,15 +16,11 @@ import adminRoutes from './routes/admin';
 import systemRoutes from './routes/system';
 import fs from 'fs';
 
-const logFile = 'server_startup.log';
 function log(msg: string) {
-    const timestamp = new Date().toISOString();
-    fs.appendFileSync(logFile, `[${timestamp}] ${msg}\n`);
-    console.log(msg);
+    console.log(`[${new Date().toISOString()}] ${msg}`);
 }
 
 const app = express();
-const prisma = new PrismaClient();
 const PORT = process.env.PORT || 5001;
 
 // ============ MIDDLEWARE ============
@@ -83,51 +79,45 @@ app.use((_req, res) => {
 
 // ============ START ============
 
-async function main() {
-    log('🚀 Starting server initialization...');
+async function initialize() {
+    log('🚀 Initializing server...');
     try {
         await prisma.$connect();
         log('✅ Database connected');
     } catch (error: any) {
         log(`❌ Database connection failed: ${error.message}`);
-        log('⚠️ Continuing server start without database...');
     }
 
+    // Auto-seed admin user
     try {
-        app.listen(Number(PORT), '0.0.0.0', async () => {
-            log(`🚀 Server running on http://0.0.0.0:${PORT}`);
-            log(`📖 API docs: http://localhost:${PORT}/api/health`);
-
-            // Auto-seed admin user
-            try {
-                const adminEmail = 'admin@barmagly.ch';
-                const exists = await prisma.user.findUnique({ where: { email: adminEmail } });
-                if (!exists) {
-                    const hashedPassword = await bcrypt.hash('admin123', 12);
-                    await prisma.user.create({
-                        data: {
-                            email: adminEmail,
-                            password: hashedPassword,
-                            name: 'Admin',
-                            role: 'ADMIN',
-                        }
-                    });
-                    log('✅ Default admin user created');
-                } else {
-                    log('ℹ️ Admin user already exists');
+        const adminEmail = 'admin@barmagly.ch';
+        const exists = await prisma.user.findUnique({ where: { email: adminEmail } });
+        if (!exists) {
+            const hashedPassword = await bcrypt.hash('admin123', 12);
+            await prisma.user.create({
+                data: {
+                    email: adminEmail,
+                    password: hashedPassword,
+                    name: 'Admin',
+                    role: 'ADMIN',
                 }
-            } catch (err: any) {
-                log(`❌ Failed to auto-seed admin: ${err.message}`);
-            }
-        });
-    } catch (error: any) {
-        log(`❌ Failed to start server: ${error.message}`);
-        process.exit(1);
+            });
+            log('✅ Default admin user created');
+        }
+    } catch (err: any) {
+        log(`❌ Auto-seed failed: ${err.message}`);
     }
 }
 
+// Check if we are in Vercel or local
 if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
-    main();
+    app.listen(Number(PORT), '0.0.0.0', async () => {
+        log(`🚀 Server running locally on http://localhost:${PORT}`);
+        await initialize();
+    });
+} else {
+    // In Vercel, initialization happens on first cold start or lazily
+    initialize().catch(err => log(`Initialization error: ${err.message}`));
 }
 
 // Graceful shutdown

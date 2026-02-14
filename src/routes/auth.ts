@@ -1,12 +1,10 @@
 import { Router, Request, Response } from 'express';
-import { PrismaClient } from '@prisma/client';
+import prisma from '../lib/prisma';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import fs from 'fs';
 import { authMiddleware, AuthRequest } from '../middleware/auth';
 
 const router = Router();
-const prisma = new PrismaClient();
 
 // POST /api/auth/login
 router.post('/login', async (req: Request, res: Response) => {
@@ -19,17 +17,17 @@ router.post('/login', async (req: Request, res: Response) => {
 
         const user = await prisma.user.findUnique({ where: { email } });
         if (!user || !user.isActive) {
-            fs.appendFileSync('login_attempts.log', `[${new Date().toISOString()}] Login failed: User not found or inactive - ${email}\n`);
+            console.log(`[${new Date().toISOString()}] Login failed: User not found or inactive - ${email}`);
             return res.status(401).json({ error: 'Invalid credentials' });
         }
 
         const isValid = await bcrypt.compare(password, user.password);
         if (!isValid) {
-            fs.appendFileSync('login_attempts.log', `[${new Date().toISOString()}] Login failed: Password mismatch - ${email}\n`);
+            console.log(`[${new Date().toISOString()}] Login failed: Password mismatch - ${email}`);
             return res.status(401).json({ error: 'Invalid credentials' });
         }
 
-        fs.appendFileSync('login_attempts.log', `[${new Date().toISOString()}] Login success: ${email}\n`);
+        console.log(`[${new Date().toISOString()}] Login success: ${email}`);
 
         const accessToken = jwt.sign(
             { id: user.id, email: user.email, role: user.role },

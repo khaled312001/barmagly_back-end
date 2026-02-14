@@ -1,10 +1,9 @@
 import { Router, Request, Response } from 'express';
-import { PrismaClient } from '@prisma/client';
+import prisma from '../lib/prisma';
 import { authMiddleware, roleGuard } from '../middleware/auth';
 import * as bcrypt from 'bcryptjs';
 
 const router = Router();
-const prisma = new PrismaClient();
 
 // ============ PUBLIC HEALTH CHECK ============
 router.get('/health', (_req, res) => {
@@ -35,7 +34,7 @@ router.get('/status', roleGuard('ADMIN'), async (_req, res) => {
         await prisma.$queryRaw`SELECT 1`;
         status.database = 'Connected';
     } catch (error: any) {
-        status.database = `Error: ${error.message}`;
+        status.database = `Error: ${error.message} `;
     }
 
     res.json(status);
@@ -44,7 +43,7 @@ router.get('/status', roleGuard('ADMIN'), async (_req, res) => {
 // Run repair / re-seed
 router.post('/repair', roleGuard('ADMIN'), async (_req, res) => {
     const logs: string[] = [];
-    const log = (msg: string) => logs.push(`[${new Date().toLocaleTimeString()}] ${msg}`);
+    const log = (msg: string) => logs.push(`[${new Date().toLocaleTimeString()}] ${msg} `);
 
     try {
         log('Starting repair operation...');
@@ -94,7 +93,7 @@ router.post('/repair', roleGuard('ADMIN'), async (_req, res) => {
         console.error('Repair error:', error);
         res.status(500).json({
             success: false,
-            message: `Repair failed: ${error.message}`,
+            message: `Repair failed: ${error.message} `,
             logs
         });
     }
