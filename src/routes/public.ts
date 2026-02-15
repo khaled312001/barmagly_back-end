@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express';
 import prisma from '../lib/prisma';
 import { getPageSections } from '../controllers/pageController';
+import { sendLeadNotification } from '../lib/mailService';
 
 const router = Router();
 
@@ -287,9 +288,13 @@ router.post('/leads', async (req: Request, res: Response) => {
             return res.status(400).json({ error: 'Name, email, and message are required' });
         }
 
+
         const lead = await prisma.lead.create({
             data: { name, email, phone, company, service, message },
         });
+
+        // Send email notification asynchronously (don't block response)
+        sendLeadNotification(lead).catch(err => console.error('Failed to send lead email:', err));
 
         res.status(201).json({ success: true, id: lead.id });
     } catch (error) {
