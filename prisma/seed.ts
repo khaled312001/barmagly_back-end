@@ -381,7 +381,7 @@ async function main() {
     for (const p of projects) {
         await prisma.project.upsert({
             where: { slug: p.slug },
-            update: { ...p },
+            update: { ...p, image: null },
             create: p
         });
     }
@@ -429,43 +429,60 @@ async function main() {
     }
     console.log('📝 Blog categories seeded');
 
-    // 10. NEW: 10 High-Quality Blog Posts
-    // Helper to generate >2000 words
+
+    // Helper to generate >2000 words with rich structure
     const generateLongContent = (title: string, topic: string) => {
         const filler = `In the rapidly evolving digital landscape, organizations are increasingly recognizing the importance of ${topic}. This shift is driven by a convergence of technological advancements and changing market dynamics. As businesses strive to stay competitive, the adoption of ${topic} strategies has become not just an option, but a necessity. The integration of these systems allows for unprecedented levels of efficiency and innovation. Furthermore, the impact of ${topic} extends beyond immediate operational improvements, influencing long-term strategic goals and customer engagement models. We are witnessing a paradigm shift where data-driven decision making and agile methodologies are paramount. The role of ${topic} in this ecosystem cannot be overstated. It serves as a catalyst for growth, enabling companies to unlock new value streams and optimize existing processes. However, navigating this terrain requires a deep understanding of both the technology and the business context. Leaders must be prepared to invest in talent, infrastructure, and cultural transformation to fully realize the benefits. As we delve deeper into this subject, it becomes clear that ${topic} is not merely a trend, but a fundamental component of the modern enterprise architecture. The successful implementation of ${topic} requires a holistic approach, considering technical, operational, and human factors. By prioritizing ${topic}, organizations can build resilience and adaptability, key traits for survival in today's volatile market. `;
 
-        // Repeat filler to ensure ~400 words per section, total 5 sections ~2000 words.
         const sectionContent = filler.repeat(3);
 
         return `
-            <h1>${title}</h1>
-            <p class="lead"><strong>An in-depth exploration of ${topic} and its transformative impact on the industry.</strong></p>
-            
-            <h2>1. The Current Landscape of ${topic}</h2>
-            <p>${sectionContent}</p>
-            <p>The ubiquity of ${topic} is evident in various sectors, from finance to healthcare. ${filler}</p>
+            <div class="blog-content">
+                <p class="lead text-xl font-light leading-relaxed mb-10 border-l-4 border-brand-accent pl-6 italic">
+                    An in-depth exploration of ${topic} and its transformative impact on the global industry.
+                </p>
+                
+                <h2 class="text-2xl font-bold mt-12 mb-6 text-white flex items-center gap-3">
+                    <span class="text-brand-accent">01.</span> The Current Landscape
+                </h2>
+                <p class="mb-6">${sectionContent}</p>
+                <p class="mb-6">The ubiquity of ${topic} is evident in various sectors, from finance to healthcare. ${filler}</p>
 
-            <h2>2. Key Challenges and Opportunities</h2>
-            <p>Despite the clear advantages, implementing ${topic} is not without challenges. ${sectionContent}</p>
-            <blockquote>"The biggest risk is not taking any risk. In a world that is changing effectively quickly, the only strategy that is guaranteed to fail is not taking risks."</blockquote>
-            <p>${filler}</p>
+                <h2 class="text-2xl font-bold mt-12 mb-6 text-white flex items-center gap-3">
+                    <span class="text-brand-accent">02.</span> Key Challenges & Opportunities
+                </h2>
+                <p class="mb-6">Despite the clear advantages, implementing ${topic} is not without challenges. ${sectionContent}</p>
+                
+                <blockquote class="my-10 p-8 bg-brand-surface/30 rounded-2xl border border-white/5 relative overflow-hidden">
+                    <div class="relative z-10 text-lg font-medium italic text-brand-muted">
+                        "The biggest risk is not taking any risk. In a world that is changing effectively quickly, the only strategy that is guaranteed to fail is not taking risks."
+                    </div>
+                </blockquote>
+                
+                <p class="mb-6">${filler}</p>
 
-            <h2>3. Strategic Implementation: A Roadmap</h2>
-            <p>To successfully integrate ${topic}, one must follow a structured approach. ${sectionContent}</p>
-            <ul>
-                <li><strong>Assessment:</strong> Analyzing current capabilities.</li>
-                <li><strong>Planning:</strong> Defining clear objectives for ${topic}.</li>
-                <li><strong>Execution:</strong> Agile deployment and iteration.</li>
-                <li><strong>Monitoring:</strong> Continuous improvement and feedback loops.</li>
-            </ul>
-            <p>${filler}</p>
+                <h2 class="text-2xl font-bold mt-12 mb-6 text-white flex items-center gap-3">
+                    <span class="text-brand-accent">03.</span> Strategic Implementation
+                </h2>
+                <p class="mb-6">To successfully integrate ${topic}, one must follow a structured approach. ${sectionContent}</p>
+                <ul class="space-y-4 my-8 pl-4 border-l-2 border-white/10">
+                    <li class="pl-4"><strong class="text-white">Assessment:</strong> Analyzing current capabilities and identifying gaps.</li>
+                    <li class="pl-4"><strong class="text-white">Planning:</strong> Defining clear objectives for ${topic} adoption.</li>
+                    <li class="pl-4"><strong class="text-white">Execution:</strong> Agile deployment and continuous iteration.</li>
+                    <li class="pl-4"><strong class="text-white">Monitoring:</strong> Feedback loops and performance optimization.</li>
+                </ul>
+                <p class="mb-6">${filler}</p>
 
-            <h2>4. The Future of ${topic} (2026-2030)</h2>
-            <p>Looking ahead, the trajectory of ${topic} points towards even greater integration and sophistication. ${sectionContent}</p>
+                <h2 class="text-2xl font-bold mt-12 mb-6 text-white flex items-center gap-3">
+                    <span class="text-brand-accent">04.</span> Future Outlook (2026-2030)
+                </h2>
+                <p class="mb-6">Looking ahead, the trajectory of ${topic} points towards even greater integration. ${sectionContent}</p>
 
-            <h2>5. Conclusion</h2>
-            <p>In conclusion, ${topic} represents a pivotal frontier for modern enterprises. By understanding its nuances and implementing robust strategies, businesses can position themselves for sustained success in a digital-first world. The journey may be complex, but the rewards of mastering ${topic} are substantial.</p>
-            <p>${filler}</p>
+                <div class="mt-16 pt-8 border-t border-white/10">
+                    <h3 class="text-xl font-bold text-white mb-4">Conclusion</h3>
+                    <p class="mb-6">In conclusion, ${topic} represents a pivotal frontier. By understanding its nuances, businesses can position themselves for sustained success. The journey may be complex, but the rewards are substantial.</p>
+                </div>
+            </div>
         `;
     };
 
@@ -477,7 +494,6 @@ async function main() {
                 excerpt: 'How Artificial Intelligence is reshaping the landscape of corporate software solutions.',
                 content: generateLongContent('The Future of AI in Enterprise Software', 'Artificial Intelligence'),
                 categoryId: blogCatMap['technology'],
-                image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995',
                 status: 'PUBLISHED'
             },
             {
@@ -486,7 +502,6 @@ async function main() {
                 excerpt: 'Exploring the precision, security, and reliability that defines Swiss engineering.',
                 content: generateLongContent('Why Swiss Software Engineering Standards Matter', 'Swiss Engineering Quality'),
                 categoryId: blogCatMap['business'],
-                image: 'https://images.unsplash.com/photo-1527664557558-a2b352fcf203',
                 status: 'PUBLISHED'
             },
             {
@@ -495,7 +510,6 @@ async function main() {
                 excerpt: 'A comprehensive guide to moving your legacy systems to the modern cloud.',
                 content: generateLongContent('Cloud Migration Strategies for 2026', 'Cloud Computing'),
                 categoryId: blogCatMap['technology'],
-                image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa',
                 status: 'PUBLISHED'
             },
             {
@@ -504,7 +518,6 @@ async function main() {
                 excerpt: 'From AR try-ons to voice commerce, see what is driving sales in digital retail.',
                 content: generateLongContent('UX Design Trends Transforming E-commerce', 'User Experience Design'),
                 categoryId: blogCatMap['design'],
-                image: 'https://images.unsplash.com/photo-1556742049-0cfed4f7a07d',
                 status: 'PUBLISHED'
             },
             {
@@ -513,7 +526,6 @@ async function main() {
                 excerpt: 'Protecting financial data in an era of increasing digital threats.',
                 content: generateLongContent('Cybersecurity Best Practices for Fintech', 'Cybersecurity'),
                 categoryId: blogCatMap['technology'],
-                image: 'https://images.unsplash.com/photo-1563986768609-322da13575f3',
                 status: 'PUBLISHED'
             },
             {
@@ -522,7 +534,6 @@ async function main() {
                 excerpt: 'When to switch from MVP to microservices? A guide for growing founders.',
                 content: generateLongContent('Scaling Your Startup: A Technical Roadmap', 'Startup Scalability'),
                 categoryId: blogCatMap['business'],
-                image: 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7',
                 status: 'PUBLISHED'
             },
             {
@@ -531,7 +542,6 @@ async function main() {
                 excerpt: 'Enhancing transparency and tracking in global logistics with distributed ledgers.',
                 content: generateLongContent('The Role of Blockchain in Supply Chain', 'Blockchain Technology'),
                 categoryId: blogCatMap['technology'],
-                image: 'https://images.unsplash.com/photo-1566576912321-d58ddd7a6088',
                 status: 'PUBLISHED'
             },
             {
@@ -540,7 +550,6 @@ async function main() {
                 excerpt: 'How modern software is improving patient outcomes and hospital efficiency.',
                 content: generateLongContent('Digital Transformation in Healthcare', 'HealthTech'),
                 categoryId: blogCatMap['technology'],
-                image: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d',
                 status: 'PUBLISHED'
             },
             {
@@ -549,7 +558,6 @@ async function main() {
                 excerpt: 'Choosing the right stack for your next mobile application project.',
                 content: generateLongContent('Mobile App Development: Native vs Cross-Platform', 'Mobile Development'),
                 categoryId: blogCatMap['technology'],
-                image: 'https://images.unsplash.com/photo-1551650975-87deedd944c3',
                 status: 'PUBLISHED'
             },
             {
@@ -558,7 +566,6 @@ async function main() {
                 excerpt: 'Writing code that consumes less energy and reduces carbon footprints.',
                 content: generateLongContent('Green Tech: Sustainable Software Architecture', 'Sustainable Technology'),
                 categoryId: blogCatMap['technology'],
-                image: 'https://images.unsplash.com/photo-1473341304170-971dccb5ac1e',
                 status: 'PUBLISHED'
             }
         ];
@@ -566,11 +573,11 @@ async function main() {
         for (const post of blogPosts) {
             await prisma.blogPost.upsert({
                 where: { slug: post.slug },
-                update: { ...post, authorId: adminUser.id },
+                update: { ...post, authorId: adminUser.id, image: null },
                 create: { ...post, authorId: adminUser.id }
             });
         }
-        console.log('📚 Blog posts seeded with extended content');
+        console.log('📚 Blog posts seeded with designed content (No Images)');
     }
 
     // 11. SEO Meta
