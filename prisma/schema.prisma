@@ -25,33 +25,39 @@ model User {
 // ============ SERVICES ============
 
 model ServiceCategory {
-  id          String    @id @default(auto()) @map("_id") @db.ObjectId
-  name        String
-  slug        String    @unique
-  description String?
-  icon        String?
-  order       Int       @default(0)
-  isActive    Boolean   @default(true)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  services    Service[]
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
+  nameEn        String?
+  slug          String    @unique
+  description   String?
+  descriptionEn String?
+  icon          String?
+  order         Int       @default(0)
+  isActive      Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  services      Service[]
 }
 
 model Service {
-  id          String          @id @default(auto()) @map("_id") @db.ObjectId
-  title       String
-  slug        String          @unique
-  description String
-  details     String?
-  icon        String?
-  image       String?
-  features    String          @default("[]")
-  order       Int             @default(0)
-  isActive    Boolean         @default(true)
-  categoryId  String          @db.ObjectId
-  category    ServiceCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  createdAt   DateTime        @default(now())
-  updatedAt   DateTime        @updatedAt
+  id            String          @id @default(auto()) @map("_id") @db.ObjectId
+  title         String
+  titleEn       String?
+  slug          String          @unique
+  description   String
+  descriptionEn String?
+  details       String?
+  detailsEn     String?
+  icon          String?
+  image         String?
+  features      String          @default("[]")
+  featuresEn    String          @default("[]")
+  order         Int             @default(0)
+  isActive      Boolean         @default(true)
+  categoryId    String          @db.ObjectId
+  category      ServiceCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
 }
 
 // ============ PORTFOLIO ============

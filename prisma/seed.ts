@@ -145,125 +145,92 @@ async function main() {
     console.log('🏠 Page sections seeded');
 
     // 4. Service Categories & Services
+    console.log('🧹 Clearing old services...');
+    await prisma.service.deleteMany();
+    await prisma.serviceCategory.deleteMany();
+
     const catData = [
-        { name: 'Development', slug: 'development', icon: 'Code2' },
-        { name: 'Design', slug: 'design', icon: 'Palette' },
-        { name: 'Solutions', slug: 'solutions', icon: 'ShoppingCart' },
-        { name: 'Marketing', slug: 'marketing', icon: 'TrendingUp' },
-        { name: 'Maintenance', slug: 'maintenance', icon: 'Wrench' },
+        { name: 'Solutions', nameEn: 'Solutions', slug: 'solutions', icon: 'ShoppingCart', order: 1 },
+        { name: 'Development', nameEn: 'Development', slug: 'development', icon: 'Code2', order: 2 },
+        { name: 'Design', nameEn: 'Design', slug: 'design', icon: 'Palette', order: 3 },
+        { name: 'Marketing', nameEn: 'Marketing', slug: 'marketing', icon: 'TrendingUp', order: 4 },
     ];
 
     const categoryMap: Record<string, string> = {};
     for (const c of catData) {
-        const cat = await prisma.serviceCategory.upsert({
-            where: { slug: c.slug },
-            update: {},
-            create: c
+        const cat = await prisma.serviceCategory.create({
+            data: { ...c, isActive: true }
         });
         categoryMap[c.name] = cat.id;
     }
 
     const services = [
         {
-            title: 'Web Development & Design',
-            slug: 'web-development',
-            description: 'We build high-performance websites using modern technologies and custom development frameworks.',
-            icon: 'Code2',
-            features: JSON.stringify(['Custom Web Applications', 'Enterprise CMS Solutions', 'Responsive UI/UX Design', 'API Integration & Development', 'E-commerce Platforms', 'Performance Optimization']),
-            categoryName: 'Development',
+            title: 'نظام نقاط البيع (POS) وحلول الأعمال',
+            titleEn: 'Point of Sale (POS) & Business Systems',
+            slug: 'pos-business-systems',
+            description: 'نقوم بتطوير أنظمة POS و ERP قوية ومخصصة للمتاجر، المطاعم، الكافيهات، الصيدليات، ومراكز التجميل.',
+            descriptionEn: 'We develop powerful POS and ERP systems tailored for retail stores, restaurants, cafes, pharmacies, and beauty salons.',
+            icon: 'ShoppingCart',
+            features: JSON.stringify(['ERP Solutions', 'POS Systems', 'Inventory Management', 'Financial Reporting', 'CRM', 'Process Automation']),
+            featuresEn: JSON.stringify(['ERP Solutions', 'POS Systems', 'Inventory Management', 'Financial Reporting', 'CRM', 'Process Automation']),
+            categoryName: 'Solutions',
             order: 1
         },
         {
-            title: 'Mobile Application Development',
-            slug: 'mobile-application-development',
-            description: 'We design and develop professional mobile applications for Android and iOS.',
-            icon: 'Smartphone',
-            features: JSON.stringify(['iOS & Android Native Apps', 'Cross-Platform Development', 'App Store & Play Store Deployment', 'User-Centric Interface Design', 'Backend Synchronization', 'Ongoing Support & Updates']),
+            title: 'تطوير وتصميم المواقع الإلكترونية',
+            titleEn: 'Web Development & Design',
+            slug: 'web-development',
+            description: 'نبني مواقع إلكترونية عالية الأداء باستخدام أحدث التقنيات وأطر التطوير المخصصة.',
+            descriptionEn: 'We build high-performance websites using modern technologies and custom development frameworks.',
+            icon: 'Code2',
+            features: JSON.stringify(['Custom Web Apps', 'Enterprise CMS', 'Responsive UI/UX', 'API Integration', 'E-commerce', 'Performance Optimization']),
+            featuresEn: JSON.stringify(['Custom Web Apps', 'Enterprise CMS', 'Responsive UI/UX', 'API Integration', 'E-commerce', 'Performance Optimization']),
             categoryName: 'Development',
             order: 2
         },
         {
-            title: 'UI/UX & Brand Identity',
-            slug: 'ui-ux-design',
-            description: 'We craft engaging user interfaces and meaningful user experiences for your website or mobile app.',
-            icon: 'Palette',
-            features: JSON.stringify(['Visual Identity & Branding', 'User Experience Strategy', 'Interactive Prototyping', 'Design Systems Development', 'User Research & Testing', 'Logo & Graphic Design']),
-            categoryName: 'Design',
+            title: 'تطوير تطبيقات الجوال',
+            titleEn: 'Mobile Application Development',
+            slug: 'mobile-application-development',
+            description: 'نصمم ونطور تطبيقات جوال احترافية لنظامي Android و iOS.',
+            descriptionEn: 'We design and develop professional mobile applications for Android and iOS.',
+            icon: 'Smartphone',
+            features: JSON.stringify(['Native iOS & Android', 'Cross-Platform Dev', 'Store Deployment', 'User-Centric UI', 'Backend Sync', 'Maintenance']),
+            featuresEn: JSON.stringify(['Native iOS & Android', 'Cross-Platform Dev', 'Store Deployment', 'User-Centric UI', 'Backend Sync', 'Maintenance']),
+            categoryName: 'Development',
             order: 3
         },
         {
-            title: 'Business Systems & Enterprise Solutions',
-            slug: 'business-systems',
-            description: 'We develop powerful POS and ERP systems tailored for retail stores, restaurants, cafes, pharmacies, and beauty salons.',
-            icon: 'ShoppingCart',
-            features: JSON.stringify(['Custom ERP Solutions', 'Point of Sale (POS) Systems', 'Inventory Management', 'Financial Reporting Tools', 'Customer Relationship Management (CRM)', 'Process Automation']),
-            categoryName: 'Solutions',
+            title: 'تصميم واجهات المستخدم والهوية البصرية',
+            titleEn: 'UI/UX & Brand Identity',
+            slug: 'ui-ux-design',
+            description: 'نصمم واجهات مستخدم جذابة وتجارب مستخدم ذات مغزى لموقعك أو تطبيق الجوال الخاص بك.',
+            descriptionEn: 'We craft engaging user interfaces and meaningful user experiences for your website or mobile app.',
+            icon: 'Palette',
+            features: JSON.stringify(['Branding & Identity', 'UX Strategy', 'Prototyping', 'Design Systems', 'User Research', 'Graphic Design']),
+            featuresEn: JSON.stringify(['Branding & Identity', 'UX Strategy', 'Prototyping', 'Design Systems', 'User Research', 'Graphic Design']),
+            categoryName: 'Design',
             order: 4
         },
         {
-            title: 'Sales & Marketing Solutions',
+            title: 'حلول المبيعات والتسويق',
+            titleEn: 'Sales & Marketing Solutions',
             slug: 'sales-marketing',
-            description: 'We provide integrated sales and marketing services to ensure your business growth journey is seamless.',
+            description: 'نقدم خدمات مبيعات وتسويق متكاملة لضمان سلاسة رحلة نمو عملك.',
+            descriptionEn: 'We provide integrated sales and marketing services to ensure your business growth journey is seamless.',
             icon: 'TrendingUp',
-            features: JSON.stringify(['Digital Marketing Strategy', 'SEO & Search Management', 'Social Media Marketing', 'Lead Generation Systems', 'Marketing Automation', 'Analytics & Reporting']),
+            features: JSON.stringify(['Marketing Strategy', 'SEO Management', 'Social Media', 'Lead Generation', 'Automation', 'Analytics']),
+            featuresEn: JSON.stringify(['Marketing Strategy', 'SEO Management', 'Social Media', 'Lead Generation', 'Automation', 'Analytics']),
             categoryName: 'Marketing',
             order: 5
-        },
-        // NEW: Regional Services
-        {
-            title: 'Software Development Switzerland',
-            slug: 'software-development-switzerland',
-            description: 'Premier Swiss-grade software engineering services tailored for the DACH region, ensuring data privacy and precision.',
-            icon: 'Code2',
-            features: JSON.stringify(['Swiss Data Hosting Compliant', 'Banking-Grade Security', 'Multilingual Support (DE/FR/IT/EN)', 'GDPR Compliance', 'Fintech Expertise', 'High-Availability Systems']),
-            categoryName: 'Development',
-            order: 6
-        },
-        {
-            title: 'Tech Consulting Sweden',
-            slug: 'tech-consulting-sweden',
-            description: 'Innovative digital transformation strategies for the Nordic market, focusing on sustainability and efficiency.',
-            icon: 'Globe',
-            features: JSON.stringify(['Green IT Architectures', 'Digital Transformation', 'Cloud Migration', 'Sustainability Tech', 'Nordic Market Strategy', 'Agile Implementation']),
-            categoryName: 'Solutions',
-            order: 7
-        },
-        {
-            title: 'Enterprise Solutions Saudi Arabia',
-            slug: 'enterprise-solutions-saudi-arabia',
-            description: 'Scalable digital platforms for KSA Vision 2030, empowering government and private sectors.',
-            icon: 'Database',
-            features: JSON.stringify(['Vision 2030 Aligned', 'Arabic-First Localization', 'Government API Integration', 'Smart City Solutions', 'Large-Scale ERPs', 'Cybersecurity Compliance']),
-            categoryName: 'Solutions',
-            order: 8
-        },
-        {
-            title: 'Mobile App Innovation UAE',
-            slug: 'mobile-app-innovation-uae',
-            description: 'Cutting-edge mobile experiences for the dynamic UAE market, from Dubai to Abu Dhabi.',
-            icon: 'Smartphone',
-            features: JSON.stringify(['Luxury Lifestyle Apps', 'Fintech & Crypto Wallets', 'Real Estate Platforms', 'Tourism Experience Apps', 'Bilingual (Ar/En) UX', 'AI-Powered Features']),
-            categoryName: 'Development',
-            order: 9
-        },
-        // NEW: Repair Service
-        {
-            title: 'System Repair & Legacy Maintenance',
-            slug: 'system-repair-maintenance',
-            description: 'Expert diagnosis, repair, and modernization of legacy software systems to restore performance and security.',
-            icon: 'Wrench',
-            features: JSON.stringify(['Legacy Code Refactoring', 'Performance Bottleneck Analysis', 'Security Patching', 'Database Optimization', 'Bug Fixes & Troubleshooting', 'System Stabilization']),
-            categoryName: 'Maintenance',
-            order: 10
         }
     ];
 
     for (const s of services) {
         const { categoryName, ...serviceData } = s;
-        await prisma.service.upsert({
-            where: { slug: s.slug },
-            update: { ...serviceData, categoryId: categoryMap[categoryName] },
-            create: { ...serviceData, categoryId: categoryMap[categoryName], isActive: true }
+        await prisma.service.create({
+            data: { ...serviceData, categoryId: categoryMap[categoryName], isActive: true }
         });
     }
     console.log('🛠️ Services seeded');
