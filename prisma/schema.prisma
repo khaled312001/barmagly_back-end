@@ -59,10 +59,13 @@ model Service {
 model Project {
   id            String         @id @default(auto()) @map("_id") @db.ObjectId
   title         String
+  titleEn       String?
   slug          String         @unique
   description   String
+  descriptionEn String?
   content       String?
   category      String
+  categoryEn    String?
   client        String?
   duration      String?
   technologies  String         @default("[]")
