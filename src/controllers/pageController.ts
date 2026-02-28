@@ -28,7 +28,7 @@ export const getPageSections = async (req: Request, res: Response) => {
         res.json(result);
     } catch (error) {
         console.error('Error fetching page sections:', error);
-        res.status(500).json({ error: 'Failed to fetch page sections' });
+        res.status(500).json({ error: 'Failed to fetch page sections', details: error instanceof Error ? error.message : String(error) });
     }
 };
 

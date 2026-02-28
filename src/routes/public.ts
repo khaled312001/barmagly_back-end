@@ -22,7 +22,8 @@ router.get('/services', async (_req: Request, res: Response) => {
         });
         res.json(categories);
     } catch (error) {
-        res.status(500).json({ error: 'Failed to fetch services' });
+        console.error('Service API error:', error);
+        res.status(500).json({ error: 'Failed to fetch services', details: error instanceof Error ? error.message : String(error) });
     }
 });
 
@@ -98,7 +99,8 @@ router.get('/portfolio', async (req: Request, res: Response) => {
             technologies: JSON.parse(p.technologies || '[]')
         })));
     } catch (error) {
-        res.status(500).json({ error: 'Failed to fetch projects' });
+        console.error('Portfolio API error:', error);
+        res.status(500).json({ error: 'Failed to fetch projects', details: error instanceof Error ? error.message : String(error) });
     }
 });
 
@@ -227,7 +229,8 @@ router.get('/testimonials', async (_req: Request, res: Response) => {
         });
         res.json(testimonials);
     } catch (error) {
-        res.status(500).json({ error: 'Failed to fetch testimonials' });
+        console.error('Testimonials API error:', error);
+        res.status(500).json({ error: 'Failed to fetch testimonials', details: error instanceof Error ? error.message : String(error) });
     }
 });
 
@@ -273,7 +276,8 @@ router.get('/settings', async (_req: Request, res: Response) => {
         });
         res.json(result);
     } catch (error) {
-        res.status(500).json({ error: 'Failed to fetch settings' });
+        console.error('Settings API error:', error);
+        res.status(500).json({ error: 'Failed to fetch settings', details: error instanceof Error ? error.message : String(error) });
     }
 });
 
