@@ -149,6 +149,10 @@ export async function seedDatabase() {
         log('🏠 Page sections seeded');
 
         // 4. Service Categories & Services
+        await prisma.service.deleteMany({});
+        await prisma.serviceCategory.deleteMany({});
+        log('🗑️ Cleared existing services and categories');
+
         const catData = [
             { name: 'Development', slug: 'development', icon: 'Code2' },
             { name: 'Design', slug: 'design', icon: 'Palette' },
@@ -212,53 +216,6 @@ export async function seedDatabase() {
                 features: JSON.stringify(['Digital Marketing Strategy', 'SEO & Search Management', 'Social Media Marketing', 'Lead Generation Systems', 'Marketing Automation', 'Analytics & Reporting']),
                 categoryName: 'Marketing',
                 order: 5
-            },
-            // NEW: Regional Services
-            {
-                title: 'Software Development Switzerland',
-                slug: 'software-development-switzerland',
-                description: 'Premier Swiss-grade software engineering services tailored for the DACH region, ensuring data privacy and precision.',
-                icon: 'Code2',
-                features: JSON.stringify(['Swiss Data Hosting Compliant', 'Banking-Grade Security', 'Multilingual Support (DE/FR/IT/EN)', 'GDPR Compliance', 'Fintech Expertise', 'High-Availability Systems']),
-                categoryName: 'Development',
-                order: 6
-            },
-            {
-                title: 'Tech Consulting Sweden',
-                slug: 'tech-consulting-sweden',
-                description: 'Innovative digital transformation strategies for the Nordic market, focusing on sustainability and efficiency.',
-                icon: 'Globe',
-                features: JSON.stringify(['Green IT Architectures', 'Digital Transformation', 'Cloud Migration', 'Sustainability Tech', 'Nordic Market Strategy', 'Agile Implementation']),
-                categoryName: 'Solutions',
-                order: 7
-            },
-            {
-                title: 'Enterprise Solutions Saudi Arabia',
-                slug: 'enterprise-solutions-saudi-arabia',
-                description: 'Scalable digital platforms for KSA Vision 2030, empowering government and private sectors.',
-                icon: 'Database',
-                features: JSON.stringify(['Vision 2030 Aligned', 'Arabic-First Localization', 'Government API Integration', 'Smart City Solutions', 'Large-Scale ERPs', 'Cybersecurity Compliance']),
-                categoryName: 'Solutions',
-                order: 8
-            },
-            {
-                title: 'Mobile App Innovation UAE',
-                slug: 'mobile-app-innovation-uae',
-                description: 'Cutting-edge mobile experiences for the dynamic UAE market, from Dubai to Abu Dhabi.',
-                icon: 'Smartphone',
-                features: JSON.stringify(['Luxury Lifestyle Apps', 'Fintech & Crypto Wallets', 'Real Estate Platforms', 'Tourism Experience Apps', 'Bilingual (Ar/En) UX', 'AI-Powered Features']),
-                categoryName: 'Development',
-                order: 9
-            },
-            // NEW: Repair Service
-            {
-                title: 'System Repair & Legacy Maintenance',
-                slug: 'system-repair-maintenance',
-                description: 'Expert diagnosis, repair, and modernization of legacy software systems to restore performance and security.',
-                icon: 'Wrench',
-                features: JSON.stringify(['Legacy Code Refactoring', 'Performance Bottleneck Analysis', 'Security Patching', 'Database Optimization', 'Bug Fixes & Troubleshooting', 'System Stabilization']),
-                categoryName: 'Maintenance',
-                order: 10
             }
         ];
 
