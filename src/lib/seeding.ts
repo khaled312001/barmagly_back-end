@@ -305,91 +305,367 @@ export async function seedDatabase() {
         }
         log('💬 Testimonials seeded');
 
-        // 6. Portfolio Projects
+        // 6. Portfolio Projects — Delete all existing then seed new ones
+        await prisma.projectImage.deleteMany({});
+        await prisma.project.deleteMany({});
+        log('🗑️ Cleared existing projects');
+
         const projects = [
+            // ── 🇨🇭 سويسرا (Switzerland) ──
             {
-                title: 'FinanceFlow Dashboard',
-                slug: 'financeflow-dashboard',
-                category: 'Web Development',
-                description: 'A comprehensive financial management dashboard for a Swiss fintech company.',
-                technologies: JSON.stringify(['React', 'Node.js', 'PostgreSQL', 'Chart.js']),
+                title: 'Barmagly Tech',
+                slug: 'barmagly-tech',
+                category: '🇨🇭 سويسرا',
+                description: 'الموقع الرسمي لشركتنا — شراكة تقنية سويسرية مرخصة. بوابة احترافية تعكس هوية الشركة وخدماتها.',
+                technologies: JSON.stringify(['Next.js', 'TypeScript', 'Node.js', 'MongoDB']),
                 isFeatured: true,
                 order: 1,
-                content: 'Full dashboard implementation...',
-                client: 'TechVentures Zurich',
-                duration: '4 Months'
+                content: 'http://barmagly.tech/',
+                client: 'Barmagly',
+                duration: 'مستمر'
             },
             {
-                title: 'StyleHub Mobile App',
-                slug: 'stylehub-app',
-                category: 'Mobile Apps',
-                description: 'A fashion e-commerce mobile application with AR try-on features.',
-                technologies: JSON.stringify(['Flutter', 'Firebase', 'Stripe', 'ARCore']),
+                title: 'Aman Law',
+                slug: 'aman-law',
+                category: '🇨🇭 سويسرا',
+                description: 'موقع مكتب محاماة متخصص في الخدمات القانونية في سويسرا. يشمل نظام حجز استشارات وعرض خدمات قانونية متعددة.',
+                technologies: JSON.stringify(['Laravel', 'PHP', 'MySQL', 'Bootstrap']),
                 isFeatured: true,
                 order: 2,
-                content: 'AR e-commerce app...',
-                client: 'StyleHub Global',
-                duration: '6 Months'
+                content: 'https://amanlaw.ch/',
+                client: 'Aman Law',
+                duration: '3 أشهر'
             },
             {
-                title: 'MediTrack POS System',
-                slug: 'meditrack-pos',
-                category: 'Business Systems',
-                description: 'Point of sale system for pharmacy chain with inventory management.',
-                technologies: JSON.stringify(['.NET', 'SQL Server', 'Electron', 'React']),
+                title: 'Swiss Bridge Academy',
+                slug: 'swiss-bridge-academy',
+                category: '🇨🇭 سويسرا',
+                description: 'منصة أكاديمية تعليمية متكاملة بنظام إدارة تعلم LMS احترافي. تتضمن دورات تدريبية وشهادات وإدارة طلاب.',
+                technologies: JSON.stringify(['React', 'Node.js', 'MongoDB', 'Stripe']),
                 isFeatured: true,
                 order: 3,
-                content: 'Pharmacy management system...',
-                client: 'MediTrack AG',
-                duration: '5 Months'
+                content: 'http://swissbridgeacademy.com/',
+                client: 'Swiss Bridge Academy',
+                duration: '5 أشهر'
             },
-            // NEW Projects
             {
-                title: 'Nordic Eco-Tracker',
-                slug: 'nordic-eco-tracker',
-                category: 'Web Development',
-                description: 'IoT-enabled sustainability dashboard for a Swedish energy firm.',
-                technologies: JSON.stringify(['Vue.js', 'Python', 'InfluxDB', 'AWS IoT']),
+                title: 'تطبيق صالون تجميل سويسري',
+                slug: 'swiss-beauty-salon-app',
+                category: '🇨🇭 سويسرا',
+                description: 'تطبيق متكامل لإدارة صالونات التجميل في سويسرا. يشمل حجز المواعيد، إدارة العملاء، نظام الدفع، وإشعارات ذكية.',
+                technologies: JSON.stringify(['Flutter', 'Firebase', 'Node.js', 'Stripe']),
                 isFeatured: true,
                 order: 4,
-                content: 'Energy monitoring platform...',
-                client: 'Svenska Kraft',
-                duration: '8 Months'
+                content: 'تطبيق صالون تجميل',
+                client: 'صالون سويسري',
+                duration: '4 أشهر'
             },
             {
-                title: 'Riyadh Smart Guide',
-                slug: 'riyadh-smart-guide',
-                category: 'Mobile Apps',
-                description: 'City navigation and tourism guide for Riyadh Season visitors.',
-                technologies: JSON.stringify(['React Native', 'Google Maps API', 'Node.js']),
+                title: 'نظام POS + موقع مطعم سويسري',
+                slug: 'swiss-restaurant-pos',
+                category: '🇨🇭 سويسرا',
+                description: 'نظام نقاط بيع متكامل لمطعم في سويسرا مع موقع إلكتروني للطلب أونلاين. يشمل إدارة الطاولات، المطبخ، والفواتير.',
+                technologies: JSON.stringify(['React', '.NET', 'SQL Server', 'Flutter']),
                 isFeatured: true,
                 order: 5,
-                content: 'Tourism application...',
-                client: 'Riyadh Tourism Board',
-                duration: '3 Months'
+                content: 'نظام POS مطعم سويسري',
+                client: 'مطعم سويسري',
+                duration: '5 أشهر'
             },
+
+            // ── 🇫🇷 فرنسا (France) ──
             {
-                title: 'Dubai Real Estate VR',
-                slug: 'dubai-real-estate-vr',
-                category: 'Web Development',
-                description: 'Virtual reality property tours for luxury Dubai listings.',
-                technologies: JSON.stringify(['Three.js', 'WebGL', 'React', 'Firebase']),
+                title: 'BN Batiment',
+                slug: 'bn-batiment',
+                category: '🇫🇷 فرنسا',
+                description: 'موقع شركة مقاولات وبناء في فرنسا. يعرض خدمات البناء والتجديد مع معرض أعمال ونظام طلب عروض أسعار.',
+                technologies: JSON.stringify(['WordPress', 'PHP', 'MySQL', 'CSS3']),
                 isFeatured: true,
                 order: 6,
-                content: 'VR property viewing experience...',
-                client: 'Elite Properties UAE',
-                duration: '5 Months'
-            }
+                content: 'https://bnbatiment.com/',
+                client: 'BN Batiment',
+                duration: '2 أشهر'
+            },
+            {
+                title: 'King Kebab Le Pouzin',
+                slug: 'king-kebab-lepouzin',
+                category: '🇫🇷 فرنسا',
+                description: 'موقع ونظام طلبات لمطعم King Kebab في فرنسا. يشمل قائمة طعام تفاعلية ونظام طلب إلكتروني متكامل.',
+                technologies: JSON.stringify(['Laravel', 'Vue.js', 'MySQL', 'Stripe']),
+                isFeatured: true,
+                order: 7,
+                content: 'https://kingkebablepouzin.fr/',
+                client: 'King Kebab',
+                duration: '2 أشهر'
+            },
+
+            // ── 🇦🇪 الإمارات العربية المتحدة (UAE) ──
+            {
+                title: 'Smile House Dental Center',
+                slug: 'smile-house-dental',
+                category: '🇦🇪 الإمارات',
+                description: 'موقع مركز طب أسنان متكامل. يشمل حجز مواعيد ذكي، عرض خدمات طبية، وملفات مرضى مع لوحة تحكم إدارية.',
+                technologies: JSON.stringify(['React', 'Node.js', 'MongoDB', 'Tailwind']),
+                isFeatured: true,
+                order: 8,
+                content: 'https://smilehousedentalcenter.com/',
+                client: 'Smile House',
+                duration: '4 أشهر'
+            },
+            {
+                title: 'Bloomingdales Arabia',
+                slug: 'bloomingdales-arabia',
+                category: '🇦🇪 الإمارات',
+                description: 'منصة تجارة إلكترونية عالمية متعددة اللغات لعلامة بلومينغديلز في المنطقة العربية.',
+                technologies: JSON.stringify(['React', 'Next.js', 'GraphQL', 'AWS']),
+                isFeatured: true,
+                order: 9,
+                content: 'https://ar.bloomingdales.ae/',
+                client: 'Bloomingdales',
+                duration: '6 أشهر'
+            },
+            {
+                title: 'Egessia',
+                slug: 'egessia',
+                category: '🇦🇪 الإمارات',
+                description: 'منصة خدمات رقمية احترافية في الإمارات مع واجهة مستخدم حديثة ونظام إدارة محتوى متقدم.',
+                technologies: JSON.stringify(['Next.js', 'TypeScript', 'PostgreSQL', 'Tailwind']),
+                isFeatured: true,
+                order: 10,
+                content: 'https://egessia.com/',
+                client: 'Egessia',
+                duration: '3 أشهر'
+            },
+            {
+                title: 'Ejada Education',
+                slug: 'ejada-education',
+                category: '🇦🇪 الإمارات',
+                description: 'منصة تعليمية متكاملة للتعليم عن بعد. تتضمن نظام إدارة محتوى تعليمي، اختبارات، وشهادات رقمية.',
+                technologies: JSON.stringify(['Laravel', 'Vue.js', 'MySQL', 'WebRTC']),
+                isFeatured: true,
+                order: 11,
+                content: 'https://www.ejadaedu.com/',
+                client: 'Ejada Education',
+                duration: '5 أشهر'
+            },
+            {
+                title: 'Sharaf DG',
+                slug: 'sharaf-dg',
+                category: '🇦🇪 الإمارات',
+                description: 'منصة تجارة إلكترونية ضخمة لسلسلة متاجر شرف دي جي للإلكترونيات في الإمارات. نظام متعدد اللغات وعالي الأداء.',
+                technologies: JSON.stringify(['React', 'Node.js', 'Elasticsearch', 'Redis']),
+                isFeatured: true,
+                order: 12,
+                content: 'https://uae.sharafdg.com/ar',
+                client: 'Sharaf DG',
+                duration: '8 أشهر'
+            },
+            {
+                title: 'نظام POS — الإمارات',
+                slug: 'uae-pos-system',
+                category: '🇦🇪 الإمارات',
+                description: 'نظام نقاط بيع متكامل لإدارة المحلات التجارية في الإمارات. يشمل كاشير سريع، إدارة مخزون، وتقارير مبيعات تفصيلية.',
+                technologies: JSON.stringify(['React', '.NET', 'SQL Server', 'Electron']),
+                isFeatured: true,
+                order: 13,
+                content: 'نظام POS الإمارات',
+                client: 'عميل إماراتي',
+                duration: '4 أشهر'
+            },
+
+            // ── 🇸🇦 المملكة العربية السعودية (Saudi Arabia) ──
+            {
+                title: 'World Trip Agency',
+                slug: 'world-trip-agency',
+                category: '🇸🇦 السعودية',
+                description: 'منصة حجز سياحي وسفر متكاملة. تشمل حجز رحلات، فنادق، برامج سياحية، ونظام دفع إلكتروني آمن.',
+                technologies: JSON.stringify(['React', 'Node.js', 'MongoDB', 'Stripe']),
+                isFeatured: true,
+                order: 14,
+                content: 'https://worldtripagency.com/',
+                client: 'World Trip Agency',
+                duration: '4 أشهر'
+            },
+            {
+                title: 'Infinity Wear',
+                slug: 'infinity-wear',
+                category: '🇸🇦 السعودية',
+                description: 'متجر إلكتروني متكامل للملابس والأزياء في السعودية مع نظام إدارة مخزون ودفع إلكتروني.',
+                technologies: JSON.stringify(['WordPress', 'WooCommerce', 'PHP', 'MySQL']),
+                isFeatured: true,
+                order: 15,
+                content: 'https://infinitywearsa.com/',
+                client: 'Infinity Wear',
+                duration: '2 أشهر'
+            },
+            {
+                title: 'Wasela (وصيلة)',
+                slug: 'wasela',
+                category: '🇸🇦 السعودية',
+                description: 'منصة خدمات لوجستية وتوصيل ذكية في السعودية. تشمل تتبع الشحنات في الوقت الفعلي ونظام إدارة السائقين.',
+                technologies: JSON.stringify(['React Native', 'Node.js', 'MongoDB', 'Google Maps']),
+                isFeatured: true,
+                order: 16,
+                content: 'http://wasiila.com/',
+                client: 'Wasela',
+                duration: '5 أشهر'
+            },
+            {
+                title: 'مؤسسة مياه مكة',
+                slug: 'makkah-water',
+                category: '🇸🇦 السعودية',
+                description: 'نظام إدارة متكامل لمؤسسة مياه مكة المكرمة. يشمل إدارة الاشتراكات، التوزيع، والتقارير الإدارية.',
+                technologies: JSON.stringify(['Laravel', 'Vue.js', 'MySQL', 'REST API']),
+                isFeatured: true,
+                order: 17,
+                content: 'https://water.itegypt.org/',
+                client: 'مؤسسة مياه مكة',
+                duration: '4 أشهر'
+            },
+            {
+                title: 'منصة هدي',
+                slug: 'hadih-platform',
+                category: '🇸🇦 السعودية',
+                description: 'منصة رقمية متخصصة في خدمات الهدي والأضاحي بالمملكة العربية السعودية مع نظام دفع وإدارة طلبات.',
+                technologies: JSON.stringify(['React', 'Node.js', 'MongoDB', 'Stripe']),
+                isFeatured: true,
+                order: 18,
+                content: 'https://hadih.itegypt.org/',
+                client: 'منصة هدي',
+                duration: '3 أشهر'
+            },
+            {
+                title: 'أكاديمية السهم الأخضر',
+                slug: 'green-arrow-academy',
+                category: '🇸🇦 السعودية',
+                description: 'منصة تعليمية وأكاديمية متكاملة مع نظام إدارة تعلم LMS، دورات تدريبية، واختبارات إلكترونية.',
+                technologies: JSON.stringify(['Laravel', 'Vue.js', 'MySQL', 'WebSocket']),
+                isFeatured: true,
+                order: 19,
+                content: 'https://greenarrow.itegypt.org/',
+                client: 'أكاديمية السهم الأخضر',
+                duration: '5 أشهر'
+            },
+
+            // ── 🇪🇬 مصر (Egypt) ──
+            {
+                title: 'متجر ميزانو',
+                slug: 'mizanoo-store',
+                category: '🇪🇬 مصر',
+                description: 'متجر إلكتروني متكامل للتجارة الإلكترونية في مصر مع سلة تسوق، نظام دفع، وإدارة المنتجات.',
+                technologies: JSON.stringify(['React', 'Node.js', 'MongoDB', 'Stripe']),
+                isFeatured: true,
+                order: 20,
+                content: 'https://www.mizanoo.com/',
+                client: 'ميزانو',
+                duration: '3 أشهر'
+            },
+            {
+                title: 'Infix LMS',
+                slug: 'infix-lms',
+                category: '🇪🇬 مصر',
+                description: 'نظام إدارة تعلم احترافي متكامل يشمل إدارة الطلاب، المعلمين، الدورات، الحضور، والامتحانات.',
+                technologies: JSON.stringify(['Laravel', 'PHP', 'MySQL', 'jQuery']),
+                isFeatured: true,
+                order: 21,
+                content: 'https://infixlms.ischooll.com/',
+                client: 'Infix LMS',
+                duration: '6 أشهر'
+            },
+            {
+                title: 'نظام POS — مصر',
+                slug: 'egypt-pos-system',
+                category: '🇪🇬 مصر',
+                description: 'نظام نقاط بيع متكامل للمحلات التجارية في مصر. يدعم الفواتير الإلكترونية، إدارة المخزون، وتعدد الفروع.',
+                technologies: JSON.stringify(['React', '.NET', 'SQL Server', 'Electron']),
+                isFeatured: true,
+                order: 22,
+                content: 'نظام POS مصر',
+                client: 'عميل مصري',
+                duration: '4 أشهر'
+            },
+
+            // ── 🇮🇶 العراق (Iraq) ──
+            {
+                title: 'Ghiarati',
+                slug: 'ghiarati',
+                category: '🇮🇶 العراق',
+                description: 'منصة عقارية متكاملة في العراق لعرض وبيع وتأجير العقارات مع خرائط تفاعلية ونظام بحث متقدم.',
+                technologies: JSON.stringify(['React', 'Node.js', 'MongoDB', 'Google Maps']),
+                isFeatured: true,
+                order: 23,
+                content: 'https://ghiarati.com/',
+                client: 'Ghiarati',
+                duration: '4 أشهر'
+            },
+
+            // ── 🌐 منصات وأنظمة مستقلة ──
+            {
+                title: 'CarBaz',
+                slug: 'carbaz',
+                category: '🌐 منصات مستقلة',
+                description: 'منصة متكاملة لبيع وشراء السيارات وقطع الغيار مع نظام بحث متقدم وإدارة إعلانات احترافية.',
+                technologies: JSON.stringify(['React', 'Laravel', 'MySQL', 'REST API']),
+                isFeatured: true,
+                order: 24,
+                content: 'https://carbaz.mamunuiux.com/',
+                client: 'CarBaz',
+                duration: '5 أشهر'
+            },
+            {
+                title: 'Fastifo',
+                slug: 'fastifo',
+                category: '🌐 منصات مستقلة',
+                description: 'منصة خدمية رقمية متعددة الاستخدامات مع واجهة مستخدم سريعة الاستجابة ونظام إدارة محتوى مرن.',
+                technologies: JSON.stringify(['Vue.js', 'Node.js', 'MongoDB', 'Tailwind']),
+                isFeatured: true,
+                order: 25,
+                content: 'https://eordar.xyz/fastifo/',
+                client: 'Fastifo',
+                duration: '3 أشهر'
+            },
+            {
+                title: 'FoodKing Demo',
+                slug: 'foodking-demo',
+                category: '🌐 منصات مستقلة',
+                description: 'نظام طلب طعام احترافي مع واجهة مطعم متكاملة، سلة طلبات، إدارة قائمة الطعام، وتتبع الطلبات.',
+                technologies: JSON.stringify(['Laravel', 'Vue.js', 'MySQL', 'Stripe']),
+                isFeatured: true,
+                order: 26,
+                content: 'https://demo.foodking.dev/',
+                client: 'FoodKing',
+                duration: '4 أشهر'
+            },
+            {
+                title: 'InfyCare Medical System',
+                slug: 'infycare-medical',
+                category: '🌐 منصات مستقلة',
+                description: 'نظام طبي متكامل لإدارة العيادات والمستشفيات. يشمل ملفات المرضى، حجز المواعيد، الوصفات الطبية، والتقارير.',
+                technologies: JSON.stringify(['Laravel', 'React', 'MySQL', 'REST API']),
+                isFeatured: true,
+                order: 27,
+                content: 'https://infycare.infyom.com/',
+                client: 'InfyCare',
+                duration: '6 أشهر'
+            },
+            {
+                title: 'Doxe Medical System',
+                slug: 'doxe-medical',
+                category: '🌐 منصات مستقلة',
+                description: 'نظام إدارة طبي احترافي مع سجلات طبية إلكترونية، جدولة مواعيد، إدارة الأطباء، وتقارير شاملة.',
+                technologies: JSON.stringify(['React', 'Node.js', 'PostgreSQL', 'Docker']),
+                isFeatured: true,
+                order: 28,
+                content: 'https://doxe.originlabsoft.com/',
+                client: 'Doxe',
+                duration: '5 أشهر'
+            },
         ];
 
         for (const p of projects) {
-            await prisma.project.upsert({
-                where: { slug: p.slug },
-                update: { ...p },
-                create: p
-            });
+            await prisma.project.create({ data: p });
         }
-        log('🚀 Projects seeded');
+        log('🚀 Projects seeded (' + projects.length + ' projects)');
 
         // 7. Team Members
         const teamMembers = [
