@@ -80,6 +80,7 @@ model Project {
   isFeatured    Boolean        @default(false)
   isActive      Boolean        @default(true)
   order         Int            @default(0)
+  projectType   String?        @default("website")
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
   images        ProjectImage[]

@@ -282,7 +282,8 @@ export async function seedDatabase() {
                 order: 1,
                 content: 'http://barmagly.tech/',
                 client: 'Barmagly',
-                duration: 'Ongoing'
+                duration: 'Ongoing',
+                projectType: 'website'
             },
             {
                 title: 'أمان لو',
@@ -297,7 +298,8 @@ export async function seedDatabase() {
                 order: 2,
                 content: 'https://amanlaw.ch/',
                 client: 'Aman Law',
-                duration: '3 Months'
+                duration: '3 Months',
+                projectType: 'website'
             },
             {
                 title: 'سويس بريدج أكاديمي',
@@ -312,7 +314,8 @@ export async function seedDatabase() {
                 order: 3,
                 content: 'http://swissbridgeacademy.com/',
                 client: 'Swiss Bridge Academy',
-                duration: '5 Months'
+                duration: '5 Months',
+                projectType: 'website'
             },
             {
                 title: 'تطبيق صالون تجميل سويسري',
@@ -325,9 +328,10 @@ export async function seedDatabase() {
                 technologies: JSON.stringify(['Flutter', 'Firebase', 'Node.js', 'Stripe']),
                 isFeatured: true,
                 order: 4,
-                content: 'Beauty Salon App',
+                content: '',
                 client: 'Swiss Salon',
-                duration: '4 Months'
+                duration: '4 Months',
+                projectType: 'app'
             },
             {
                 title: 'نظام POS + موقع مطعم سويسري',
@@ -340,9 +344,10 @@ export async function seedDatabase() {
                 technologies: JSON.stringify(['React', '.NET', 'SQL Server', 'Flutter']),
                 isFeatured: true,
                 order: 5,
-                content: 'Swiss Restaurant POS',
+                content: '',
                 client: 'Swiss Restaurant',
-                duration: '5 Months'
+                duration: '5 Months',
+                projectType: 'pos'
             },
 
             // ── 🇫🇷 France (FR) ──
@@ -359,7 +364,8 @@ export async function seedDatabase() {
                 order: 6,
                 content: 'https://bnbatiment.com/',
                 client: 'BN Batiment',
-                duration: '2 Months'
+                duration: '2 Months',
+                projectType: 'website'
             },
             {
                 title: 'King Kebab Le Pouzin',
@@ -374,7 +380,8 @@ export async function seedDatabase() {
                 order: 7,
                 content: 'https://kingkebablepouzin.fr/',
                 client: 'King Kebab',
-                duration: '2 Months'
+                duration: '2 Months',
+                projectType: 'website'
             },
 
             // ── 🇦🇪 UAE (AE) ──
@@ -391,7 +398,8 @@ export async function seedDatabase() {
                 order: 8,
                 content: 'https://smilehousedentalcenter.com/',
                 client: 'Smile House',
-                duration: '4 Months'
+                duration: '4 Months',
+                projectType: 'website'
             },
             {
                 title: 'Bloomingdales Arabia',
@@ -406,7 +414,8 @@ export async function seedDatabase() {
                 order: 9,
                 content: 'https://ar.bloomingdales.ae/',
                 client: 'Bloomingdales',
-                duration: '6 Months'
+                duration: '6 Months',
+                projectType: 'website'
             },
             {
                 title: 'Egessia',
@@ -421,7 +430,8 @@ export async function seedDatabase() {
                 order: 10,
                 content: 'https://egessia.com/',
                 client: 'Egessia',
-                duration: '3 Months'
+                duration: '3 Months',
+                projectType: 'website'
             },
             {
                 title: 'Ejada Education',
@@ -436,7 +446,8 @@ export async function seedDatabase() {
                 order: 11,
                 content: 'https://www.ejadaedu.com/',
                 client: 'Ejada Education',
-                duration: '5 Months'
+                duration: '5 Months',
+                projectType: 'website'
             },
             {
                 title: 'Sharaf DG',
@@ -451,7 +462,8 @@ export async function seedDatabase() {
                 order: 12,
                 content: 'https://uae.sharafdg.com/ar',
                 client: 'Sharaf DG',
-                duration: '8 Months'
+                duration: '8 Months',
+                projectType: 'website'
             },
             {
                 title: 'نظام POS — الإمارات',
@@ -464,9 +476,10 @@ export async function seedDatabase() {
                 technologies: JSON.stringify(['React', '.NET', 'SQL Server', 'Electron']),
                 isFeatured: true,
                 order: 13,
-                content: 'UAE POS System',
+                content: '',
                 client: 'UAE Client',
-                duration: '4 Months'
+                duration: '4 Months',
+                projectType: 'pos'
             },
 
             // ── 🇸🇦 Saudi Arabia (SA) ──
@@ -483,7 +496,8 @@ export async function seedDatabase() {
                 order: 14,
                 content: 'https://worldtripagency.com/',
                 client: 'World Trip Agency',
-                duration: '4 Months'
+                duration: '4 Months',
+                projectType: 'website'
             },
             {
                 title: 'Infinity Wear',
@@ -498,7 +512,8 @@ export async function seedDatabase() {
                 order: 15,
                 content: 'https://infinitywearsa.com/',
                 client: 'Infinity Wear',
-                duration: '2 Months'
+                duration: '2 Months',
+                projectType: 'website'
             },
             {
                 title: 'Wasela (وصيلة)',
@@ -513,7 +528,8 @@ export async function seedDatabase() {
                 order: 16,
                 content: 'http://wasiila.com/',
                 client: 'Wasela',
-                duration: '5 Months'
+                duration: '5 Months',
+                projectType: 'app'
             },
             {
                 title: 'مؤسسة مياه مكة',
@@ -528,7 +544,8 @@ export async function seedDatabase() {
                 order: 17,
                 content: 'https://water.itegypt.org/',
                 client: 'Makkah Water',
-                duration: '4 Months'
+                duration: '4 Months',
+                projectType: 'website'
             },
             {
                 title: 'منصة هدي',
@@ -543,7 +560,8 @@ export async function seedDatabase() {
                 order: 18,
                 content: 'https://hadih.itegypt.org/',
                 client: 'Hadih Platform',
-                duration: '3 Months'
+                duration: '3 Months',
+                projectType: 'website'
             },
             {
                 title: 'أكاديمية السهم الأخضر',
@@ -558,7 +576,8 @@ export async function seedDatabase() {
                 order: 19,
                 content: 'https://greenarrow.itegypt.org/',
                 client: 'Green Arrow Academy',
-                duration: '5 Months'
+                duration: '5 Months',
+                projectType: 'website'
             },
 
             // ── 🇪🇬 Egypt (EG) ──
@@ -575,7 +594,8 @@ export async function seedDatabase() {
                 order: 20,
                 content: 'https://www.mizanoo.com/',
                 client: 'Mizanoo',
-                duration: '3 Months'
+                duration: '3 Months',
+                projectType: 'website'
             },
             {
                 title: 'Infix LMS',
@@ -590,7 +610,8 @@ export async function seedDatabase() {
                 order: 21,
                 content: 'https://infixlms.ischooll.com/',
                 client: 'Infix LMS',
-                duration: '6 Months'
+                duration: '6 Months',
+                projectType: 'website'
             },
             {
                 title: 'نظام POS — مصر',
@@ -603,9 +624,10 @@ export async function seedDatabase() {
                 technologies: JSON.stringify(['React', '.NET', 'SQL Server', 'Electron']),
                 isFeatured: true,
                 order: 22,
-                content: 'Egypt POS System',
+                content: '',
                 client: 'Egypt Client',
-                duration: '4 Months'
+                duration: '4 Months',
+                projectType: 'pos'
             },
 
             // ── 🇮🇶 Iraq (IQ) ──
@@ -622,7 +644,8 @@ export async function seedDatabase() {
                 order: 23,
                 content: 'https://ghiarati.com/',
                 client: 'Ghiarati',
-                duration: '4 Months'
+                duration: '4 Months',
+                projectType: 'website'
             },
 
             // ── 🌐 Independent Platforms ──
@@ -639,7 +662,8 @@ export async function seedDatabase() {
                 order: 24,
                 content: 'https://carbaz.mamunuiux.com/',
                 client: 'CarBaz',
-                duration: '5 Months'
+                duration: '5 Months',
+                projectType: 'website'
             },
             {
                 title: 'Fastifo',
@@ -654,7 +678,8 @@ export async function seedDatabase() {
                 order: 25,
                 content: 'https://eordar.xyz/fastifo/',
                 client: 'Fastifo',
-                duration: '3 Months'
+                duration: '3 Months',
+                projectType: 'website'
             },
             {
                 title: 'FoodKing Demo',
@@ -669,7 +694,8 @@ export async function seedDatabase() {
                 order: 26,
                 content: 'https://demo.foodking.dev/',
                 client: 'FoodKing',
-                duration: '4 Months'
+                duration: '4 Months',
+                projectType: 'website'
             },
             {
                 title: 'InfyCare Medical System',
@@ -684,7 +710,8 @@ export async function seedDatabase() {
                 order: 27,
                 content: 'https://infycare.infyom.com/',
                 client: 'InfyCare',
-                duration: '6 Months'
+                duration: '6 Months',
+                projectType: 'website'
             },
             {
                 title: 'Doxe Medical System',
@@ -699,7 +726,8 @@ export async function seedDatabase() {
                 order: 28,
                 content: 'https://doxe.originlabsoft.com/',
                 client: 'Doxe',
-                duration: '5 Months'
+                duration: '5 Months',
+                projectType: 'website'
             },
         ];
 
