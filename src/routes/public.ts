@@ -351,43 +351,138 @@ router.get('/pages/:page', getPageSections);
 // GET /api/public/update-translations
 router.get('/update-translations', async (_req: Request, res: Response) => {
     try {
-        console.log('🌍 Starting translation update via API...');
+        console.log('🌍 Starting comprehensive translation update...');
 
-        // 1. Update Services
+        // 1. Update Service Categories
+        const categories = [
+            { slug: 'solutions', name: 'الحلول البرمجية', description: 'حلول أعمال متكاملة مصممة لتبسيط العمليات وتحفيز النمو.' },
+            { slug: 'development', name: 'التطوير البرمجي', description: 'بناء منصات رقمية قوية باستخدام أحدث التقنيات السويسرية.' },
+            { slug: 'design', name: 'التصميم والإبداع', description: 'صياغة هويات بصرية وتجارب مستخدم فريدة تترك انطباعاً دائماً.' },
+            { slug: 'marketing', name: 'التسويق والنمو', description: 'استراتيجيات رقمية تركز على النتائج لتوسيع نطاق وصولك في السوق.' }
+        ];
+
+        for (const cat of categories) {
+            await prisma.serviceCategory.updateMany({
+                where: { slug: cat.slug },
+                data: { name: cat.name, description: cat.description }
+            });
+        }
+
+        // 2. Update Services (including internal features)
         const servicesTranslations = [
+            {
+                slug: 'pos-business-systems',
+                title: 'نظام نقاط البيع (POS) وحلول الأعمال',
+                description: 'نقوم بتطوير أنظمة POS و ERP قوية ومخصصة للمتاجر، المطاعم، الكافيهات، الصيدليات، ومراكز التجميل.',
+                features: ['حلول ERP', 'أنظمة POS', 'إدارة المخزون', 'التقارير المالية', 'إدارة علاقات العملاء', 'أتمتة العمليات']
+            },
             {
                 slug: 'web-development',
                 title: 'تطوير وتصميم المواقع الإلكترونية',
                 description: 'نبني مواقع إلكترونية عالية الأداء باستخدام أحدث التقنيات وأطر التطوير المخصصة.',
+                features: ['تطبيقات ويب مخصصة', 'نظم إدارة محتوى للمؤسسات', 'واجهات مستخدم متجاوبة', 'تكامل الأنظمة البرمجية API', 'المتاجر الإلكترونية', 'تحسين الأداء']
             },
             {
                 slug: 'mobile-application-development',
                 title: 'تطوير تطبيقات الجوال',
                 description: 'نصمم ونطور تطبيقات جوال احترافية لنظامي Android و iOS.',
+                features: ['تطبيقات Android و iOS أصلية', 'تطوير التطبيقات متعددة المنصات', 'النشر على المتاجر', 'واجهات مستخدم تركز على المستخدم', 'مزامنة مع الباك إند', 'الدعم والصيانة']
             },
             {
-                slug: 'pos-business-systems',
-                title: 'نظام نقاط البيع (POS) وحلول الأعمال',
-                description: 'نقوم بتطوير أنظمة POS و ERP قوية ومخصصة للمتاجر، المطاعم، الكافيهات، الصيدليات، ومراكز التجميل.',
+                slug: 'ui-ux-design',
+                title: 'تصميم واجهات المستخدم والهوية البصرية',
+                description: 'نصمم واجهات مستخدم جذابة وتجارب مستخدم ذات مغزى لموقعك أو تطبيق الجوال الخاص بك.',
+                features: ['العلامة التجارية والهوية البصرية', 'استراتيجية تجربة المستخدم', 'تصميم النماذج الأولية', 'أنظمة التصميم', 'أبحاث المستخدمين', 'التصميم الجرافيكي']
             },
             {
                 slug: 'sales-marketing',
                 title: 'حلول المبيعات والتسويق',
                 description: 'نقدم خدمات مبيعات وتسويق متكاملة لضمان سلاسة رحلة نمو عملك.',
+                features: ['استراتيجية التسويق', 'إدارة تحسين محركات البحث SEO', 'وسائل التواصل الاجتماعي', 'جذب العملاء المحتملين', 'أتمتة التسويق', 'التحليلات والتقارير']
             }
         ];
 
-        for (const t of servicesTranslations) {
+        for (const s of servicesTranslations) {
             await prisma.service.updateMany({
-                where: { slug: t.slug },
+                where: { slug: s.slug },
                 data: {
-                    title: t.title,
-                    description: t.description,
+                    title: s.title,
+                    description: s.description,
+                    features: JSON.stringify(s.features)
                 }
             });
         }
 
-        // 2. Update Home Features Section
+        // 3. Update Portfolio (Projects)
+        const projects = [
+            {
+                slug: 'swiss-banking-platform',
+                title: 'منصة مصرفية سويسرية',
+                description: 'نظام آمن للغاية للمعاملات المالية وحماية البيانات.',
+                category: 'تطوير التكنولوجيا المالية',
+                technologies: ['React', 'Node.js', 'PostgreSQL', 'Docker']
+            },
+            {
+                slug: 'luxury-e-commerce',
+                title: 'متجر فاخر للتجارة الإلكترونية',
+                description: 'تجربة تسوق فريدة ومبسطة للمنتجات الراقية.',
+                category: 'المتاجر الإلكترونية',
+                technologies: ['Next.js', 'Stripe', 'Tailwind CSS', 'Redux']
+            },
+            {
+                slug: 'ai-healthcare-system',
+                title: 'نظام رعاية صحية ذكي',
+                description: 'منصة مدعومة بالذكاء الاصطناعي لتحليل البيانات الطبية وتشخيص الحالات.',
+                category: 'تطور الحلول الذكية',
+                technologies: ['Python', 'TensorFlow', 'FastAPI', 'AWS']
+            }
+        ];
+
+        for (const p of projects) {
+            await prisma.project.updateMany({
+                where: { slug: p.slug },
+                data: {
+                    title: p.title,
+                    description: p.description,
+                    category: p.category,
+                    technologies: JSON.stringify(p.technologies)
+                }
+            });
+        }
+
+        // 4. Update Testimonials
+        const testimonialTranslations = [
+            {
+                order: 1,
+                name: 'مايكل تشين',
+                role: 'مدير، تك فينتشرز زيورخ',
+                content: 'صممت بَرمَجلي بنية تحتية متطورة للغاية لمنصتنا. التزامهم بمعايير الجودة السويسرية واضح في كل سطر من الأكواد.',
+            },
+            {
+                order: 2,
+                name: 'سارة جونسون',
+                role: 'مؤسس، ستايل هاب جلوبال',
+                content: 'كان لنهجهم الاستراتيجي في تصميم واجهة المستخدم وتجربة المستخدم والتطوير دور كبير في تقديم منتج يتميز حقاً في السوق العالمية. نوصي بهم بشدة.',
+            },
+            {
+                order: 3,
+                name: 'ديفيد حسن',
+                role: 'الرئيس التنفيذي، ريالتكس الشرق الأوسط',
+                content: 'حلول نقاط البيع (POS) من بَرمَجلي أحدثت ثورة في إدارة فروعنا المتعددة. الاستقرار والمزامنة في التحديثات لا مثيل لها.',
+            }
+        ];
+        for (const test of testimonialTranslations) {
+            await prisma.testimonial.updateMany({
+                where: { order: test.order },
+                data: {
+                    name: test.name,
+                    role: test.role,
+                    content: test.content
+                }
+            });
+        }
+
+        // 5. Update Home Features Section (PageSection)
         const homeFeatures = await prisma.pageSection.findFirst({
             where: { page: 'home', section: 'features' }
         });
@@ -406,40 +501,7 @@ router.get('/update-translations', async (_req: Request, res: Response) => {
             });
         }
 
-        // 3. Updating Testimonials
-        const testimonialTranslations = [
-            {
-                order: 1, // Michael Chen
-                name: 'مايكل تشين',
-                role: 'مدير، تك فينتشرز زيورخ',
-                content: 'صممت بَرمَجلي بنية تحتية متطورة للغاية لمنصتنا. التزامهم بمعايير الجودة السويسرية واضح في كل سطر من الأكواد.',
-            },
-            {
-                order: 2, // Sarah Johnson
-                name: 'سارة جونسون',
-                role: 'مؤسس، ستايل هاب جلوبال',
-                content: 'كان لنهجهم الاستراتيجي في تصميم واجهة المستخدم وتجربة المستخدم والتطوير دور كبير في تقديم منتج يتميز حقاً في السوق العالمية. نوصي بهم بشدة.',
-            },
-            {
-                order: 3, // David Hassan
-                name: 'ديفيد حسن',
-                role: 'الرئيس التنفيذي، ريالتكس الشرق الأوسط',
-                content: 'حلول نقاط البيع (POS) من بَرمَجلي أحدثت ثورة في إدارة فروعنا المتعددة. الاستقرار والمزامنة في التحديثات لا مثيل لها.',
-            }
-        ];
-
-        for (const test of testimonialTranslations) {
-            await prisma.testimonial.updateMany({
-                where: { order: test.order },
-                data: {
-                    name: test.name,
-                    role: test.role,
-                    content: test.content
-                }
-            });
-        }
-
-        res.json({ success: true, message: 'Translation update complete!' });
+        res.json({ success: true, message: 'Comprehensive Database Translation Complete!' });
     } catch (error) {
         console.error('Translation update error:', error);
         res.status(500).json({ error: 'Failed to update translations', details: error instanceof Error ? error.message : String(error) });
