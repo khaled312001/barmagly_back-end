@@ -417,21 +417,35 @@ router.get('/update-translations', async (_req: Request, res: Response) => {
             }
         ];
 
+        const updateStats: any = { categories: categories.length, services: 0, details: [] };
+
         for (const s of servicesTranslations) {
             const slugs = Array.isArray(s.slug) ? s.slug : [s.slug];
-            for (const singleSlug of slugs) {
-                await prisma.service.updateMany({
-                    where: { slug: singleSlug },
-                    data: {
-                        title: s.title,
-                        titleEn: s.titleEn,
-                        description: s.description,
-                        descriptionEn: s.descriptionEn,
-                        features: JSON.stringify(s.features),
-                        featuresEn: JSON.stringify(s.featuresEn)
-                    }
-                });
-            }
+
+            // Hyper-robust matching for POS
+            const isPos = slugs.some(sl => sl.includes('pos'));
+
+            const result = await prisma.service.updateMany({
+                where: {
+                    OR: [
+                        { slug: { in: slugs } },
+                        ...(isPos ? [
+                            { slug: { contains: 'pos', mode: 'insensitive' } as any },
+                            { title: { contains: 'POS', mode: 'insensitive' } as any }
+                        ] : [])
+                    ]
+                },
+                data: {
+                    title: s.title,
+                    titleEn: s.titleEn,
+                    description: s.description,
+                    descriptionEn: s.descriptionEn,
+                    features: JSON.stringify(s.features),
+                    featuresEn: JSON.stringify(s.featuresEn)
+                }
+            });
+            updateStats.services += result.count;
+            updateStats.details.push({ name: s.titleEn, count: result.count });
         }
 
         // 3. Update Portfolio (Projects)
