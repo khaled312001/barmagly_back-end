@@ -355,16 +355,21 @@ router.get('/update-translations', async (_req: Request, res: Response) => {
 
         // 1. Update Service Categories
         const categories = [
-            { slug: 'solutions', name: 'الحلول البرمجية', description: 'حلول أعمال متكاملة مصممة لتبسيط العمليات وتحفيز النمو.' },
-            { slug: 'development', name: 'التطوير البرمجي', description: 'بناء منصات رقمية قوية باستخدام أحدث التقنيات السويسرية.' },
-            { slug: 'design', name: 'التصميم والإبداع', description: 'صياغة هويات بصرية وتجارب مستخدم فريدة تترك انطباعاً دائماً.' },
-            { slug: 'marketing', name: 'التسويق والنمو', description: 'استراتيجيات رقمية تركز على النتائج لتوسيع نطاق وصولك في السوق.' }
+            { slug: 'solutions', name: 'الحلول البرمجية', nameEn: 'Software Solutions', description: 'حلول أعمال متكاملة مصممة لتبسيط العمليات وتحفيز النمو.', descriptionEn: 'Integrated business solutions designed to streamline operations and drive growth.' },
+            { slug: 'development', name: 'التطوير البرمجي', nameEn: 'Software Development', description: 'بناء منصات رقمية قوية باستخدام أحدث التقنيات السويسرية.', descriptionEn: 'Building powerful digital platforms using the latest Swiss technologies.' },
+            { slug: 'design', name: 'التصميم والإبداع', nameEn: 'Design & Creative', description: 'صياغة هويات بصرية وتجارب مستخدم فريدة تترك انطباعاً دائماً.', descriptionEn: 'Crafting unique visual identities and user experiences that leave a lasting impression.' },
+            { slug: 'marketing', name: 'التسويق والنمو', nameEn: 'Marketing & Growth', description: 'استراتيجيات رقمية تركز على النتائج لتوسيع نطاق وصولك في السوق.', descriptionEn: 'Result-oriented digital strategies to expand your market reach.' }
         ];
 
         for (const cat of categories) {
             await prisma.serviceCategory.updateMany({
                 where: { slug: cat.slug },
-                data: { name: cat.name, description: cat.description }
+                data: {
+                    name: cat.name,
+                    nameEn: cat.nameEn,
+                    description: cat.description,
+                    descriptionEn: cat.descriptionEn
+                }
             });
         }
 
@@ -453,22 +458,31 @@ router.get('/update-translations', async (_req: Request, res: Response) => {
             {
                 slug: 'swiss-banking-platform',
                 title: 'منصة مصرفية سويسرية',
+                titleEn: 'Swiss Banking Platform',
                 description: 'نظام آمن للغاية للمعاملات المالية وحماية البيانات.',
+                descriptionEn: 'Highly secure system for financial transactions and data protection.',
                 category: 'تطوير التكنولوجيا المالية',
+                categoryEn: 'FinTech Development',
                 technologies: ['React', 'Node.js', 'PostgreSQL', 'Docker']
             },
             {
                 slug: 'luxury-e-commerce',
                 title: 'متجر فاخر للتجارة الإلكترونية',
+                titleEn: 'Luxury E-commerce',
                 description: 'تجربة تسوق فريدة ومبسطة للمنتجات الراقية.',
+                descriptionEn: 'Unique and simplified shopping experience for high-end products.',
                 category: 'المتاجر الإلكترونية',
+                categoryEn: 'E-commerce',
                 technologies: ['Next.js', 'Stripe', 'Tailwind CSS', 'Redux']
             },
             {
                 slug: 'ai-healthcare-system',
                 title: 'نظام رعاية صحية ذكي',
+                titleEn: 'AI Healthcare System',
                 description: 'منصة مدعومة بالذكاء الاصطناعي لتحليل البيانات الطبية وتشخيص الحالات.',
+                descriptionEn: 'AI-powered platform for medical data analysis and diagnosis.',
                 category: 'تطور الحلول الذكية',
+                categoryEn: 'Smart Solutions',
                 technologies: ['Python', 'TensorFlow', 'FastAPI', 'AWS']
             }
         ];
@@ -478,8 +492,11 @@ router.get('/update-translations', async (_req: Request, res: Response) => {
                 where: { slug: p.slug },
                 data: {
                     title: p.title,
+                    titleEn: p.titleEn,
                     description: p.description,
+                    descriptionEn: p.descriptionEn,
                     category: p.category,
+                    categoryEn: p.categoryEn,
                     technologies: JSON.stringify(p.technologies)
                 }
             });
@@ -490,20 +507,29 @@ router.get('/update-translations', async (_req: Request, res: Response) => {
             {
                 order: 1,
                 name: 'مايكل تشين',
+                nameEn: 'Michael Chen',
                 role: 'مدير، تك فينتشرز زيورخ',
+                roleEn: 'Director, TechVentures Zurich',
                 content: 'صممت بَرمَجلي بنية تحتية متطورة للغاية لمنصتنا. التزامهم بمعايير الجودة السويسرية واضح في كل سطر من الأكواد.',
+                contentEn: 'Barmagly designed a highly sophisticated infrastructure for our platform. Their commitment to Swiss quality standards is evident in every line of code.',
             },
             {
                 order: 2,
                 name: 'سارة جونسون',
+                nameEn: 'Sarah Johnson',
                 role: 'مؤسس، ستايل هاب جلوبال',
+                roleEn: 'Founder, StyleHub Global',
                 content: 'كان لنهجهم الاستراتيجي في تصميم واجهة المستخدم وتجربة المستخدم والتطوير دور كبير في تقديم منتج يتميز حقاً في السوق العالمية. نوصي بهم بشدة.',
+                contentEn: 'Their strategic approach to UI/UX design and development was instrumental in delivering a product that truly stands out in the global market. Highly recommended.',
             },
             {
                 order: 3,
                 name: 'ديفيد حسن',
+                nameEn: 'David Hassan',
                 role: 'الرئيس التنفيذي، ريالتكس الشرق الأوسط',
+                roleEn: 'CEO, RealTex Middle East',
                 content: 'حلول نقاط البيع (POS) من بَرمَجلي أحدثت ثورة في إدارة فروعنا المتعددة. الاستقرار والمزامنة في التحديثات لا مثيل لها.',
+                contentEn: "Barmagly's POS solutions revolutionized our multi-branch management. The stability and synchronization in updates are unparalleled.",
             }
         ];
         for (const test of testimonialTranslations) {
@@ -511,8 +537,11 @@ router.get('/update-translations', async (_req: Request, res: Response) => {
                 where: { order: test.order },
                 data: {
                     name: test.name,
+                    nameEn: test.nameEn,
                     role: test.role,
-                    content: test.content
+                    roleEn: test.roleEn,
+                    content: test.content,
+                    contentEn: test.contentEn
                 }
             });
         }

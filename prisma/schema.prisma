@@ -100,9 +100,12 @@ model ProjectImage {
 model BlogPost {
   id          String       @id @default(auto()) @map("_id") @db.ObjectId
   title       String
+  titleEn     String?
   slug        String       @unique
   excerpt     String
+  excerptEn   String?
   content     String
+  contentEn   String?
   image       String?
   status      String       @default("DRAFT")
   publishedAt DateTime?
@@ -124,6 +127,7 @@ model BlogPost {
 model BlogCategory {
   id        String     @id @default(auto()) @map("_id") @db.ObjectId
   name      String
+  nameEn    String?
   slug      String     @unique
   posts     BlogPost[]
   createdAt DateTime   @default(now())
@@ -132,6 +136,7 @@ model BlogCategory {
 model BlogTag {
   id    String     @id @default(auto()) @map("_id") @db.ObjectId
   name  String     @unique
+  nameEn String?
   slug  String     @unique
   postIds String[] @db.ObjectId
   posts BlogPost[] @relation(fields: [postIds], references: [id])
@@ -142,9 +147,13 @@ model BlogTag {
 model Testimonial {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   name      String
+  nameEn    String?
   role      String
+  roleEn    String?
   company   String?
+  companyEn String?
   content   String
+  contentEn String?
   rating    Int      @default(5)
   image     String?
   isActive  Boolean  @default(true)
@@ -158,8 +167,11 @@ model Testimonial {
 model TeamMember {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   name      String
+  nameEn    String?
   role      String
+  roleEn    String?
   bio       String?
+  bioEn     String?
   image     String?
   linkedin  String?
   github    String?
@@ -198,14 +210,17 @@ model NewsletterSubscriber {
 // ============ FAQ ============
 
 model FAQ {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  question  String
-  answer    String
-  category  String?
-  order     Int      @default(0)
-  isActive  Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  question   String
+  questionEn String?
+  answer     String
+  answerEn   String?
+  category   String?
+  categoryEn String?
+  order      Int      @default(0)
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
 
 // ============ SITE SETTINGS ============
@@ -220,15 +235,17 @@ model SiteSetting {
 // ============ SEO META ============
 
 model SeoMeta {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  page        String   @unique
-  title       String?
-  description String?
-  keywords    String   @default("[]")
-  ogImage     String?
-  schema      String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  page          String   @unique
+  title         String?
+  titleEn       String?
+  description   String?
+  descriptionEn String?
+  keywords      String   @default("[]")
+  ogImage       String?
+  schema        String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
 
 // ============ MEDIA ============
