@@ -368,49 +368,70 @@ router.get('/update-translations', async (_req: Request, res: Response) => {
             });
         }
 
-        // 2. Update Services (including internal features)
+        // 2. Update Services (including internal features and English counterparts)
         const servicesTranslations = [
             {
-                slug: 'pos-business-systems',
+                slug: ['pos-business-systems', 'business-systems', 'pos'], // Supporting multiple possible slugs
                 title: 'نظام نقاط البيع (POS) وحلول الأعمال',
+                titleEn: 'POS System & Business Solutions',
                 description: 'نقوم بتطوير أنظمة POS و ERP قوية ومخصصة للمتاجر، المطاعم، الكافيهات، الصيدليات، ومراكز التجميل.',
-                features: ['حلول ERP', 'أنظمة POS', 'إدارة المخزون', 'التقارير المالية', 'إدارة علاقات العملاء', 'أتمتة العمليات']
+                descriptionEn: 'We develop powerful POS and ERP systems tailored for retail stores, restaurants, cafes, pharmacies, and beauty salons.',
+                features: ['حلول ERP', 'أنظمة POS', 'إدارة المخزون', 'التقارير المالية', 'إدارة علاقات العملاء', 'أتمتة العمليات'],
+                featuresEn: ['ERP Solutions', 'POS Systems', 'Inventory Management', 'Financial Reporting', 'CRM', 'Process Automation']
             },
             {
-                slug: 'web-development',
+                slug: ['web-development'],
                 title: 'تطوير وتصميم المواقع الإلكترونية',
+                titleEn: 'Web Development & Design',
                 description: 'نبني مواقع إلكترونية عالية الأداء باستخدام أحدث التقنيات وأطر التطوير المخصصة.',
-                features: ['تطبيقات ويب مخصصة', 'نظم إدارة محتوى للمؤسسات', 'واجهات مستخدم متجاوبة', 'تكامل الأنظمة البرمجية API', 'المتاجر الإلكترونية', 'تحسين الأداء']
+                descriptionEn: 'We build high-performance websites using modern technologies and custom development frameworks.',
+                features: ['تطبيقات ويب مخصصة', 'نظم إدارة محتوى للمؤسسات', 'واجهات مستخدم متجاوبة', 'تكامل الأنظمة البرمجية API', 'المتاجر الإلكترونية', 'تحسين الأداء'],
+                featuresEn: ['Custom Web Apps', 'Enterprise CMS', 'Responsive UI/UX', 'API Integration', 'E-commerce', 'Performance Optimization']
             },
             {
-                slug: 'mobile-application-development',
+                slug: ['mobile-application-development'],
                 title: 'تطوير تطبيقات الجوال',
+                titleEn: 'Mobile Application Development',
                 description: 'نصمم ونطور تطبيقات جوال احترافية لنظامي Android و iOS.',
-                features: ['تطبيقات Android و iOS أصلية', 'تطوير التطبيقات متعددة المنصات', 'النشر على المتاجر', 'واجهات مستخدم تركز على المستخدم', 'مزامنة مع الباك إند', 'الدعم والصيانة']
+                descriptionEn: 'We design and develop professional mobile applications for Android and iOS.',
+                features: ['تطبيقات Android و iOS أصلية', 'تطوير التطبيقات متعددة المنصات', 'النشر على المتاجر', 'واجهات مستخدم تركز على المستخدم', 'مزامنة مع الباك إند', 'الدعم والصيانة'],
+                featuresEn: ['Native iOS & Android', 'Cross-Platform Dev', 'Store Deployment', 'User-Centric UI', 'Backend Sync', 'Maintenance']
             },
             {
-                slug: 'ui-ux-design',
+                slug: ['ui-ux-design'],
                 title: 'تصميم واجهات المستخدم والهوية البصرية',
+                titleEn: 'UI/UX & Brand Identity',
                 description: 'نصمم واجهات مستخدم جذابة وتجارب مستخدم ذات مغزى لموقعك أو تطبيق الجوال الخاص بك.',
-                features: ['العلامة التجارية والهوية البصرية', 'استراتيجية تجربة المستخدم', 'تصميم النماذج الأولية', 'أنظمة التصميم', 'أبحاث المستخدمين', 'التصميم الجرافيكي']
+                descriptionEn: 'We craft engaging user interfaces and meaningful user experiences for your website or mobile app.',
+                features: ['العلامة التجارية والهوية البصرية', 'استراتيجية تجربة المستخدم', 'تصميم النماذج الأولية', 'أنظمة التصميم', 'أبحاث المستخدمين', 'التصميم الجرافيكي'],
+                featuresEn: ['Branding & Identity', 'UX Strategy', 'Prototyping', 'Design Systems', 'User Research', 'Graphic Design']
             },
             {
-                slug: 'sales-marketing',
+                slug: ['sales-marketing'],
                 title: 'حلول المبيعات والتسويق',
+                titleEn: 'Sales & Marketing Solutions',
                 description: 'نقدم خدمات مبيعات وتسويق متكاملة لضمان سلاسة رحلة نمو عملك.',
-                features: ['استراتيجية التسويق', 'إدارة تحسين محركات البحث SEO', 'وسائل التواصل الاجتماعي', 'جذب العملاء المحتملين', 'أتمتة التسويق', 'التحليلات والتقارير']
+                descriptionEn: 'We provide integrated sales and marketing services to ensure your business growth journey is seamless.',
+                features: ['استراتيجية التسويق', 'إدارة تحسين محركات البحث SEO', 'وسائل التواصل الاجتماعي', 'جذب العملاء المحتملين', 'أتمتة التسويق', 'التحليلات والتقارير'],
+                featuresEn: ['Marketing Strategy', 'SEO Management', 'Social Media', 'Lead Generation', 'Automation', 'Analytics']
             }
         ];
 
         for (const s of servicesTranslations) {
-            await prisma.service.updateMany({
-                where: { slug: s.slug },
-                data: {
-                    title: s.title,
-                    description: s.description,
-                    features: JSON.stringify(s.features)
-                }
-            });
+            const slugs = Array.isArray(s.slug) ? s.slug : [s.slug];
+            for (const singleSlug of slugs) {
+                await prisma.service.updateMany({
+                    where: { slug: singleSlug },
+                    data: {
+                        title: s.title,
+                        titleEn: s.titleEn,
+                        description: s.description,
+                        descriptionEn: s.descriptionEn,
+                        features: JSON.stringify(s.features),
+                        featuresEn: JSON.stringify(s.featuresEn)
+                    }
+                });
+            }
         }
 
         // 3. Update Portfolio (Projects)
