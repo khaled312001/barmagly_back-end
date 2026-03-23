@@ -2,10 +2,13 @@ import nodemailer from 'nodemailer';
 
 export const sendLeadNotification = async (lead: any) => {
     try {
-        const smtpHost = process.env.SMTP_HOST;
+        // Strip surrounding quotes Vercel might add to env var values
+        const stripQuotes = (s?: string) => s ? s.replace(/^"(.*)"$/, '$1').trim() : s;
+
+        const smtpHost = stripQuotes(process.env.SMTP_HOST);
         const smtpPort = Number(process.env.SMTP_PORT) || 465;
-        const smtpUser = process.env.SMTP_USER;
-        const smtpPass = process.env.SMTP_PASS;
+        const smtpUser = stripQuotes(process.env.SMTP_USER);
+        const smtpPass = stripQuotes(process.env.SMTP_PASS);
 
         if (!smtpHost || !smtpUser || !smtpPass) {
             console.error('SMTP not configured: missing SMTP_HOST, SMTP_USER, or SMTP_PASS');
@@ -14,7 +17,7 @@ export const sendLeadNotification = async (lead: any) => {
 
         // Strip surrounding quotes from MAIL_FROM if present
         const rawMailFrom = process.env.MAIL_FROM || smtpUser;
-        const mailFrom = rawMailFrom.replace(/^"(.*)"$/, '$1');
+        const mailFrom = rawMailFrom.replace(/^"(.*)"$/, '$1').trim();
 
         const transporter = nodemailer.createTransport({
             host: smtpHost,
