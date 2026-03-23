@@ -26,10 +26,10 @@ async function main() {
     const settings = [
         { key: 'companyName', value: 'Barmagly' },
         { key: 'email', value: 'info@barmagly.ch' },
-        { key: 'phone', value: '+41 77 941 21 26' },
+        { key: 'phone', value: '' },
         { key: 'address', value: 'Zurich, Switzerland' },
         { key: 'license', value: 'CHE-154.312.079' },
-        { key: 'whatsappNumber', value: '+41779412126' },
+        { key: 'whatsappNumber', value: '' },
         { key: 'linkedin', value: 'https://linkedin.com/company/barmagly' },
         { key: 'instagram', value: 'https://instagram.com/barmagly' },
     ];
