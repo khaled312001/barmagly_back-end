@@ -186,6 +186,19 @@ router.post('/portfolio', roleGuard('ADMIN', 'EDITOR'), async (req: Request, res
     }
 });
 
+router.get('/portfolio/:id', roleGuard('ADMIN', 'EDITOR'), async (req: Request, res: Response) => {
+    try {
+        const project = await prisma.project.findUnique({
+            where: { id: req.params.id },
+            include: { images: true },
+        });
+        if (!project) return res.status(404).json({ error: 'Project not found' });
+        res.json({ ...project, technologies: JSON.parse(project.technologies || '[]') });
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch project' });
+    }
+});
+
 router.put('/portfolio/:id', roleGuard('ADMIN', 'EDITOR'), async (req: Request, res: Response) => {
     try {
         const project = await prisma.project.update({
