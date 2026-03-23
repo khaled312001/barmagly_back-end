@@ -297,8 +297,8 @@ router.post('/leads', async (req: Request, res: Response) => {
             data: { name, email, phone, company, service, message },
         });
 
-        // Send email notification asynchronously (don't block response)
-        sendLeadNotification(lead).catch(err => console.error('Failed to send lead email:', err));
+        // Await email so Vercel doesn't kill the process before it sends
+        await sendLeadNotification(lead);
 
         res.status(201).json({ success: true, id: lead.id });
     } catch (error) {
