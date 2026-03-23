@@ -2,22 +2,36 @@ import nodemailer from 'nodemailer';
 
 export const sendLeadNotification = async (lead: any) => {
     try {
+        const smtpHost = process.env.SMTP_HOST;
+        const smtpPort = Number(process.env.SMTP_PORT) || 465;
+        const smtpUser = process.env.SMTP_USER;
+        const smtpPass = process.env.SMTP_PASS;
+
+        if (!smtpHost || !smtpUser || !smtpPass) {
+            console.error('SMTP not configured: missing SMTP_HOST, SMTP_USER, or SMTP_PASS');
+            return false;
+        }
+
+        // Strip surrounding quotes from MAIL_FROM if present
+        const rawMailFrom = process.env.MAIL_FROM || smtpUser;
+        const mailFrom = rawMailFrom.replace(/^"(.*)"$/, '$1');
+
         const transporter = nodemailer.createTransport({
-            host: process.env.SMTP_HOST,
-            port: Number(process.env.SMTP_PORT),
-            secure: true, // true for 465, false for other ports
+            host: smtpHost,
+            port: smtpPort,
+            secure: smtpPort === 465,
             auth: {
-                user: process.env.SMTP_USER,
-                pass: process.env.SMTP_PASS,
+                user: smtpUser,
+                pass: smtpPass,
+            },
+            tls: {
+                rejectUnauthorized: false,
             },
         });
 
-        // Verify connection configuration
-        await transporter.verify();
-
         const mailOptions = {
-            from: process.env.MAIL_FROM || process.env.SMTP_USER,
-            to: process.env.SMTP_USER, // Send to admin
+            from: mailFrom,
+            to: smtpUser,
             subject: `New Lead: ${lead.name} - ${lead.service || 'General Inquiry'}`,
             html: `
                 <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
@@ -35,7 +49,7 @@ export const sendLeadNotification = async (lead: any) => {
         };
 
         const info = await transporter.sendMail(mailOptions);
-        console.log('Email sent: %s', info.messageId);
+        console.log('Email sent successfully:', info.messageId);
         return true;
     } catch (error) {
         console.error('Error sending email:', error);
