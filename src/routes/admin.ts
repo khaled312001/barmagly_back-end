@@ -201,12 +201,26 @@ router.get('/portfolio/:id', roleGuard('ADMIN', 'EDITOR'), async (req: Request, 
 
 router.put('/portfolio/:id', roleGuard('ADMIN', 'EDITOR'), async (req: Request, res: Response) => {
     try {
+        const { title, description, content, category, client, duration, technologies, results, isFeatured, isActive, image } = req.body;
         const project = await prisma.project.update({
             where: { id: req.params.id },
-            data: { ...req.body, slug: req.body.title ? slugify(req.body.title) : undefined },
+            data: {
+                ...(title !== undefined && { title, slug: slugify(title) }),
+                ...(description !== undefined && { description }),
+                ...(content !== undefined && { content }),
+                ...(category !== undefined && { category }),
+                ...(client !== undefined && { client }),
+                ...(duration !== undefined && { duration }),
+                ...(technologies !== undefined && { technologies: JSON.stringify(Array.isArray(technologies) ? technologies : []) }),
+                ...(results !== undefined && { results }),
+                ...(isFeatured !== undefined && { isFeatured: Boolean(isFeatured) }),
+                ...(isActive !== undefined && { isActive: Boolean(isActive) }),
+                ...(image !== undefined && { image }),
+            },
         });
         res.json(project);
     } catch (error) {
+        console.error('PUT /portfolio/:id error:', error);
         res.status(500).json({ error: 'Failed to update project' });
     }
 });
